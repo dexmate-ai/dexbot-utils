@@ -73,6 +73,7 @@ class DexSGripperConfig(BaseJointComponentConfig):
         pv_mode: Position-velocity control mode flag
         side: Gripper side ("left" or "right")
         pose_pool: Dictionary of predefined gripper poses with joint positions
+        set_mode_query: Property returning service name for setting gripper control mode
         state_sub_topic: Property returning topic for gripper state feedback
         control_pub_topic: Property returning topic for gripper control commands
         joints: Property returning list of joint names for the gripper
@@ -86,6 +87,10 @@ class DexSGripperConfig(BaseJointComponentConfig):
             "close": [0.0],
         }
     )
+
+    @property
+    def set_mode_query(self) -> str:
+        return f"mode/gripper/{self.side}"
 
     # TODO: when gripper auto detection is available, we should use the hand namespace instead of gripper namespace
     @property

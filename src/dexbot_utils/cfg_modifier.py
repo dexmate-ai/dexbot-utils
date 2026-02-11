@@ -70,8 +70,10 @@ def runtime_override_robot_config(
             if f"{side}_arm" in config.components:
                 arm = config.components[f"{side}_arm"]
                 # EE pass-through is disabled when hand type is specified
-                if hand_type != HandType.UNKNOWN:
-                    arm.enable_ee_pass_through = False
+                if hand_type != HandType.UNKNOWN and hasattr(
+                    arm, "enable_ee_pass_through"
+                ):
+                    arm.enable_ee_pass_through = False  # type: ignore[attr-defined]
 
             hand_key = f"{side}_hand"
             if hand_key in config.components:

@@ -118,23 +118,22 @@ class URDFParser:
         limit_elem = joint_element.find("limit")
         limit = None
         if limit_elem is not None:
+            effort_str = limit_elem.get("effort")
+            velocity_str = limit_elem.get("velocity")
             limit = JointLimit(
                 lower=float(limit_elem.get("lower", "0")),
                 upper=float(limit_elem.get("upper", "0")),
-                effort=float(limit_elem.get("effort"))
-                if limit_elem.get("effort")
-                else None,
-                velocity=float(limit_elem.get("velocity"))
-                if limit_elem.get("velocity")
-                else None,
+                effort=float(effort_str) if effort_str else None,
+                velocity=float(velocity_str) if velocity_str else None,
             )
 
         # Parse axis if exists
         axis_elem = joint_element.find("axis")
-        axis = None
+        axis: tuple[float, float, float] | None = None
         if axis_elem is not None:
             xyz = axis_elem.get("xyz", "1 0 0")
-            axis = tuple(map(float, xyz.split()))
+            parts = [float(x) for x in xyz.split()]
+            axis = (parts[0], parts[1], parts[2])
 
         return JointInfo(
             name=name,

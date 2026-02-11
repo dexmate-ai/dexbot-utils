@@ -20,7 +20,7 @@ from .constants import (
     ROBOT_NAME_ENV_VAR,
     ROBOT_NAME_PATTERN,
 )
-from .urdf_utils import URDFParser
+from .urdf_utils import JointLimit, URDFParser
 
 
 class RobotInfo:
@@ -297,7 +297,7 @@ class RobotInfo:
             raise AttributeError(
                 f"Component '{component}' does not have joints attribute"
             )
-        return len(comp_config.joints)
+        return len(comp_config.joints)  # type: ignore[attr-defined]
 
     def get_component_joints(self, component: str) -> list[str]:
         """Get joint names for a component.
@@ -316,16 +316,16 @@ class RobotInfo:
 
         # Handle different component types
         if hasattr(comp_config, "joints"):
-            return list(comp_config.joints)
+            return list(comp_config.joints)  # type: ignore[attr-defined]
         elif hasattr(comp_config, "steer_joints") or hasattr(
             comp_config, "drive_joints"
         ):
             # Chassis special case
-            joints = []
+            joints: list[str] = []
             if hasattr(comp_config, "steer_joints"):
-                joints.extend(comp_config.steer_joints)
+                joints.extend(comp_config.steer_joints)  # type: ignore[attr-defined]
             if hasattr(comp_config, "drive_joints"):
-                joints.extend(comp_config.drive_joints)
+                joints.extend(comp_config.drive_joints)  # type: ignore[attr-defined]
             return joints
         else:
             raise AttributeError(f"Component '{component}' does not have joints")
@@ -358,7 +358,7 @@ class RobotInfo:
         """
         pv_components = []
         for name, comp_config in self._config.components.items():
-            if hasattr(comp_config, "pv_mode") and comp_config.pv_mode:
+            if hasattr(comp_config, "pv_mode") and comp_config.pv_mode:  # type: ignore[attr-defined]
                 pv_components.append(name)
         return pv_components
 
@@ -417,7 +417,7 @@ class RobotInfo:
         Raises:
             RuntimeError: If URDF not loaded
         """
-        if not self.has_urdf:
+        if not self.has_urdf or self._urdf_parser is None:
             raise RuntimeError("URDF not loaded. Call load_urdf() first.")
         return self._urdf_parser.get_joint_names(joint_type)
 
@@ -430,25 +430,25 @@ class RobotInfo:
         Raises:
             RuntimeError: If URDF not loaded
         """
-        if not self.has_urdf:
+        if not self.has_urdf or self._urdf_parser is None:
             raise RuntimeError("URDF not loaded. Call load_urdf() first.")
         return self._urdf_parser.get_movable_joint_names()
 
     def get_joint_limits(
         self, joint_names: list[str] | None = None
-    ) -> dict[str, dict[str, float]]:
+    ) -> dict[str, JointLimit]:
         """Get joint limits from URDF.
 
         Args:
             joint_names: Optional list of joint names to get limits for
 
         Returns:
-            Dictionary mapping joint names to limit dictionaries
+            Dictionary mapping joint names to JointLimit objects
 
         Raises:
             RuntimeError: If URDF not loaded
         """
-        if not self.has_urdf:
+        if not self.has_urdf or self._urdf_parser is None:
             raise RuntimeError("URDF not loaded. Call load_urdf() first.")
         return self._urdf_parser.get_joint_limits(joint_names)
 
@@ -474,7 +474,7 @@ class RobotInfo:
             >>> pos_limits[0]  # First joint limits
             array([-1.57,  1.57])
         """
-        if not self.has_urdf:
+        if not self.has_urdf or self._urdf_parser is None:
             raise RuntimeError("URDF not loaded. Call load_urdf() first.")
 
         limits = self._urdf_parser.get_joint_limits(joint_names)
@@ -507,7 +507,7 @@ class RobotInfo:
             >>> vel_limits[0]  # First joint velocity limit
             1.0
         """
-        if not self.has_urdf:
+        if not self.has_urdf or self._urdf_parser is None:
             raise RuntimeError("URDF not loaded. Call load_urdf() first.")
 
         limits = self._urdf_parser.get_joint_limits(joint_names)
@@ -540,7 +540,7 @@ class RobotInfo:
             >>> effort_limits[0]  # First joint effort limit
             100.0
         """
-        if not self.has_urdf:
+        if not self.has_urdf or self._urdf_parser is None:
             raise RuntimeError("URDF not loaded. Call load_urdf() first.")
 
         limits = self._urdf_parser.get_joint_limits(joint_names)
@@ -558,7 +558,7 @@ class RobotInfo:
         Raises:
             RuntimeError: If URDF not loaded
         """
-        if not self.has_urdf:
+        if not self.has_urdf or self._urdf_parser is None:
             raise RuntimeError("URDF not loaded. Call load_urdf() first.")
         return self._urdf_parser.get_link_names()
 
@@ -568,7 +568,11 @@ class RobotInfo:
 
     def __repr__(self) -> str:
         """String representation."""
-        urdf_status = f"urdf={self._urdf_path.name if self.has_urdf else 'not loaded'}"
+        urdf_status = (
+            f"urdf={self._urdf_path.name}"
+            if self.has_urdf and self._urdf_path
+            else "not loaded"
+        )
         return (
             f"RobotInfo("
             f"model='{self.robot_model}', "

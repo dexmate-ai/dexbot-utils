@@ -20,7 +20,11 @@ class Vega1ArmConfig(BaseJointComponentConfig):
         wrist_button_sub_topic: Property returning topic for wrist button state
         control_pub_topic: Property returning topic for arm control commands
         set_mode_query: Property returning service name for setting arm control mode
-        ee_pass_through_pub_topic: Property returning topic for end-effector pass-through
+        pid_query: Property returning service name for PID configuration
+        brake_query: Property returning service name for brake control
+        ee_baud_rate_query: Property returning service name for end-effector baud rate configuration
+        ee_pass_through_pub_topic: Property returning topic for end-effector pass-through commands
+        ee_pass_through_state_sub_topic: Property returning topic for end-effector pass-through state feedback
     """
 
     side: str = "left"
@@ -77,5 +81,21 @@ class Vega1ArmConfig(BaseJointComponentConfig):
         return f"mode/arm/{self.side}"
 
     @property
+    def pid_query(self) -> str:
+        return f"system/arm_pid/{self.side}"
+
+    @property
+    def brake_query(self) -> str:
+        return f"system/arm_brake/{self.side}"
+
+    @property
+    def ee_baud_rate_query(self) -> str:
+        return f"system/ee_baud_rate/{self.side}"
+
+    @property
     def ee_pass_through_pub_topic(self) -> str:
         return f"control/ee_pass_through/{self.side}"
+
+    @property
+    def ee_pass_through_state_sub_topic(self) -> str:
+        return f"state/ee_pass_through/{self.side}"

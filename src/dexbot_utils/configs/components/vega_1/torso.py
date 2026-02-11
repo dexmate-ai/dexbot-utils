@@ -18,9 +18,6 @@ class Vega1TorsoConfig(BaseJointComponentConfig):
     """
 
     pv_mode: bool = True
-    joints: list[str] = field(
-        default_factory=lambda: ["torso_j1", "torso_j2", "torso_j3"]
-    )
     state_sub_topic: str = "state/torso"
     control_pub_topic: str = "control/torso"
 
@@ -39,3 +36,7 @@ class Vega1TorsoConfig(BaseJointComponentConfig):
             "crouch90_high": [0.78, 1.57, -0.78],
         }
     )
+
+    @property
+    def joints(self) -> list[str]:
+        return ["torso_j1", "torso_j2", "torso_j3"]

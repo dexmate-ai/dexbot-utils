@@ -19,7 +19,6 @@ class Vega1HeadConfig(BaseJointComponentConfig):
     """
 
     pv_mode: bool = True
-    joints: list[str] = field(default_factory=lambda: ["head_j1", "head_j2", "head_j3"])
 
     state_sub_topic: str = "state/head"
     control_pub_topic: str = "control/head"
@@ -30,3 +29,7 @@ class Vega1HeadConfig(BaseJointComponentConfig):
             "tucked": [0.0, 0.0, -1.37],
         }
     )
+
+    @property
+    def joints(self) -> list[str]:
+        return ["head_j1", "head_j2", "head_j3"]

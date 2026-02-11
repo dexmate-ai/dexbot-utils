@@ -1,6 +1,7 @@
 """Base component configuration classes."""
 
-from dataclasses import MISSING, dataclass, field
+from abc import ABC, abstractmethod
+from dataclasses import dataclass
 
 
 @dataclass
@@ -15,14 +16,15 @@ class BaseComponentConfig:
 
 
 @dataclass
-class BaseJointComponentConfig(BaseComponentConfig):
+class BaseJointComponentConfig(BaseComponentConfig, ABC):
     """Base configuration for a robot component with joints.
 
-    Subclasses must define a `joints` attribute, either as a dataclass field
-    or as a property that computes joint names dynamically.
-
-    Attributes:
-        joints: List of joint names for the component (field or property)
+    Subclasses must implement the `joints` property to return
+    the list of joint names for the component.
     """
 
-    joints: list[str] = field(default=MISSING, init=False)
+    @property
+    @abstractmethod
+    def joints(self) -> list[str]:
+        """List of joint names for the component."""
+        ...
