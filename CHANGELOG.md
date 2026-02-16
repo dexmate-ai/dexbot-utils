@@ -2,6 +2,11 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.4.2] - 2026-02-15
+
+### Added
+- Force torque sensor mode query name (`force_torque_sensor_query`) to `Vega1ArmConfig`.
+
 ## [0.4.1] - 2026-02-06
 
 ### Added

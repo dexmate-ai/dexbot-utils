@@ -23,6 +23,7 @@ class Vega1ArmConfig(BaseJointComponentConfig):
         pid_query: Property returning service name for PID configuration
         brake_query: Property returning service name for brake control
         ee_baud_rate_query: Property returning service name for end-effector baud rate configuration
+        force_torque_sensor_query: Property returning service name for force torque sensor mode control
         ee_pass_through_pub_topic: Property returning topic for end-effector pass-through commands
         ee_pass_through_state_sub_topic: Property returning topic for end-effector pass-through state feedback
     """
@@ -91,6 +92,10 @@ class Vega1ArmConfig(BaseJointComponentConfig):
     @property
     def ee_baud_rate_query(self) -> str:
         return f"system/ee_baud_rate/{self.side}"
+
+    @property
+    def force_torque_sensor_query(self) -> str:
+        return f"mode/force_torque_sensor/{self.side}"
 
     @property
     def ee_pass_through_pub_topic(self) -> str:
