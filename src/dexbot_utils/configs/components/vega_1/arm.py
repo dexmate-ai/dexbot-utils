@@ -13,6 +13,7 @@ class Vega1ArmConfig(BaseJointComponentConfig):
         side: Arm side ("left" or "right")
         pv_mode: Position-velocity control mode flag
         default_control_hz: Default control frequency in Hz
+        enable_ee_pass_through: Enable end-effector pass-through mode by default
         joints: Property returning list of joint names for the arm
         pose_pool: Property returning dictionary of predefined arm poses
         state_sub_topic: Property returning topic for arm state feedback
@@ -31,7 +32,7 @@ class Vega1ArmConfig(BaseJointComponentConfig):
     side: str = "left"
     pv_mode: bool = False
     default_control_hz: int = 100
-    enable_ee_pass_through: bool = False
+    enable_ee_pass_through: bool = True
 
     @property
     def joints(self) -> list[str]:

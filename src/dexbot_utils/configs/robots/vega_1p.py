@@ -5,9 +5,8 @@ from dataclasses import dataclass, field
 from dexmate_urdf import robots
 
 from ..components.sensors.cameras import ZedXCameraConfig, ZedXOneCameraConfig
-from ..components.sensors.imu import ChassisIMUConfig, ZedIMUConfig
+from ..components.sensors.imu import ZedIMUConfig
 from ..components.sensors.lidar import Lidar3DConfig
-from ..components.sensors.ultrasonic import UltraSonicConfig
 from ..components.vega_1 import (
     BatteryConfig,
     DexDGripperConfig,
@@ -48,10 +47,8 @@ class Vega1pConfig(BaseRobotConfig):
     sensors: dict[str, BaseComponentConfig] = field(
         default_factory=lambda: {
             "head_camera": ZedXCameraConfig(name="head_camera"),
-            "chassis_imu": ChassisIMUConfig(name="chassis_imu"),
             "head_imu": ZedIMUConfig(name="head_imu"),
             "front_lidar_3d": Lidar3DConfig(name="lidar_3d_front"),
-            "ultrasonic": UltraSonicConfig(name="ultrasonic"),
         }
     )
 
@@ -117,10 +114,8 @@ class Vega1pDGripperConfig(Vega1pConfig):
     sensors: dict[str, BaseComponentConfig] = field(
         default_factory=lambda: {
             "head_camera": ZedXCameraConfig(name="head_camera"),
-            "chassis_imu": ChassisIMUConfig(name="chassis_imu"),
             "head_imu": ZedIMUConfig(name="head_imu"),
             "front_lidar_3d": Lidar3DConfig(name="lidar_3d_front"),
-            "ultrasonic": UltraSonicConfig(name="ultrasonic"),
             "left_wrist_camera": ZedXOneCameraConfig(side="left"),
             "right_wrist_camera": ZedXOneCameraConfig(side="right"),
         }

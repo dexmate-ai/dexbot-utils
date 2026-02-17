@@ -2,6 +2,23 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.4.3] - 2026-02-16
+
+### Added
+- `RobotInfo(configs=...)` parameter to initialize from a pre-built `BaseRobotConfig` instance.
+- `RobotInfo.get_default_config()` static method to retrieve and modify registry configs.
+- `RobotInfo._resolve_variant_from_env()` refactored to `@staticmethod`.
+- `BaseRobotConfig.has_sensor()` method to check sensor availability.
+- `BaseRobotConfig.enable_sensor()` method to enable sensors by name with validation and error reporting.
+
+### Changed
+- `enable_ee_pass_through` default changed from `False` to `True` in `Vega1ArmConfig`.
+- Runtime configuration modifier now auto-detects hand type and injects the appropriate hand config when not explicitly provided.
+
+### Fixed
+- Warning message for hand detection failure now correctly refers to end-effector detection.
+- Removed `chassis_imu` and `ultrasonic` sensors from `Vega1pConfig` and `Vega1pDGripperConfig` — these sensors are not present on Vega-1P hardware.
+
 ## [0.4.2] - 2026-02-15
 
 ### Added

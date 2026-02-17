@@ -8,8 +8,14 @@ from dataclasses import dataclass
 class BaseComponentConfig:
     """Base configuration for a generic robot component.
 
+    Robot components (arm, hand, torso, head, chassis, etc.) inherit the
+    default ``enabled=True``. Sensor components override this to
+    ``enabled=False`` so they must be explicitly enabled by the user.
+
     Attributes:
-        enabled: Whether the component is enabled in the configuration
+        enabled: Whether the component is enabled in the configuration.
+                 Defaults to True for robot components, overridden to
+                 False in all sensor configs.
     """
 
     enabled: bool = True

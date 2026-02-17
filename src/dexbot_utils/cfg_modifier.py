@@ -19,17 +19,21 @@ def runtime_override_robot_config(
 ):
     """Apply runtime-driven overrides to a robot's configuration.
 
-    This function mutates `robot_info.config` in place based on runtime inputs:
+    This function mutates the config in place based on runtime inputs:
     - Optionally disables the `estop` and `heartbeat` components.
-    - Updates end-effector (hand) components per detected `hand_types`.
-      - Removes a hand component when the detected type is `HandType.UNKNOWN`.
-      - Replaces a mismatched hand component when `enable_hand_type_override` is True.
+    - Updates end-effector (hand) components per detected `hand_types`:
+      - Disables a hand component (`enabled = False`) when the detected type
+        is `HandType.UNKNOWN` (server has no topics for it).
+      - Injects a new hand component when a known hand type is detected but
+        no hand entry exists in the config.
+      - Replaces a mismatched hand component when `enable_hand_type_override`
+        is True.
       - Disables arm end-effector pass-through (`enable_ee_pass_through = False`)
         when a concrete hand type is provided.
-    - Emits warnings via the logger when overrides or removals occur.
+    - Emits warnings via the logger when overrides, injections, or disables occur.
 
     Args:
-        robot_info: Robot metadata and configuration container to be mutated.
+        config: Robot configuration to be mutated.
         hand_types: Mapping from side name (`"left"`, `"right"`) to detected
             `HandType`. Use `HandType.UNKNOWN` when no hand is detected.
         enable_hand_type_override: If True, replaces an existing hand component in
@@ -78,9 +82,9 @@ def runtime_override_robot_config(
             hand_key = f"{side}_hand"
             if hand_key in config.components:
                 if hand_type == HandType.UNKNOWN:
-                    # config.components.pop(hand_key)
+                    config.components[hand_key].enabled = False
                     logger.warning(
-                        f"No {side}_hand detected at runtime, the future version will remove the hand component from the config in this case. For now, we will keep the hand component in the config."
+                        f"Disabling {side}_hand: can not detect known end-effector from robot-controller."
                     )
                 else:
                     desired_hand_type = hand_type_mapping[
@@ -99,3 +103,11 @@ def runtime_override_robot_config(
                             logger.warning(
                                 f"Detected {side}_hand type is {hand_type}, but the input config is {desired_hand_type}."
                             )
+            else:
+                # Hand not in config — inject if a known type was detected
+                if hand_type != HandType.UNKNOWN:
+                    new_hand_cfg = hand_type_reverse_mapping[hand_type](side=side)
+                    config.components[hand_key] = new_hand_cfg
+                    logger.warning(
+                        f"Auto-adding {side}_hand config ({hand_type}) based on runtime detection"
+                    )

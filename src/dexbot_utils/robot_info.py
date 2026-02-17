@@ -50,28 +50,41 @@ class RobotInfo:
     def __init__(
         self,
         variant: str | None = None,
+        *,
+        configs: BaseRobotConfig | None = None,
     ):
-        """Initialize RobotInfo with variant name.
+        """Initialize RobotInfo with variant name or configs.
 
         Args:
             variant: Robot variant name (e.g., "vega_1", "vega_1u").
                     If None, reads from ROBOT_CONFIG or ROBOT_NAME env vars.
-            robot_model: Alias for variant parameter (for compatibility).
+            configs: Pre-built robot configuration. Cannot be combined
+                    with the variant parameter.
 
         Raises:
+            ValueError: If both variant and configs are provided.
             ValueError: If neither parameter provided and no env vars set.
         """
+        if variant is not None and configs is not None:
+            raise ValueError(
+                "Cannot specify both 'variant' and 'configs'. "
+                "Use 'variant' to load from registry, or 'configs' to provide a custom configuration."
+            )
+
         # Initialize internal state
         self._urdf_parser: URDFParser | None = None
         self._urdf_path: Path | None = None
         self._robot_name_from_env: str = os.getenv(ROBOT_NAME_ENV_VAR, "")
 
-        # Resolve variant name
-        if variant is None:
-            variant = self._resolve_variant_from_env()
-
-        # Load dataclass configuration
-        self._config: BaseRobotConfig = get_robot_config(variant)
+        if configs is not None:
+            # Use provided configs directly
+            self._config: BaseRobotConfig = configs
+        else:
+            # Resolve variant name
+            if variant is None:
+                variant = self._resolve_variant_from_env()
+            # Load dataclass configuration from registry
+            self._config = get_robot_config(variant)
 
         # Auto-load URDF if specified in config
         if self._config.urdf_path:
@@ -86,7 +99,8 @@ class RobotInfo:
         else:
             logger.debug("No URDF path specified in config")
 
-    def _resolve_variant_from_env(self) -> str:
+    @staticmethod
+    def _resolve_variant_from_env() -> str:
         """Resolve variant name from environment variables.
 
         Priority:
@@ -106,8 +120,9 @@ class RobotInfo:
             return variant.replace(".py", "")
 
         # Fallback to ROBOT_NAME
-        if self._robot_name_from_env:
-            return self._derive_variant_from_robot_name(self._robot_name_from_env)
+        robot_name = os.getenv(ROBOT_NAME_ENV_VAR, "")
+        if robot_name:
+            return RobotInfo._derive_variant_from_robot_name(robot_name)
 
         # No env vars set
         raise ValueError(
@@ -115,6 +130,27 @@ class RobotInfo:
             f"nor {ROBOT_NAME_ENV_VAR} environment variables are set. "
             f"Either provide variant parameter or set one of these environment variables."
         )
+
+    @staticmethod
+    def get_default_config(variant: str | None = None) -> BaseRobotConfig:
+        """Get a default robot configuration from the registry.
+
+        Returns a config instance that can be modified and passed to
+        RobotInfo(configs=...).
+
+        Args:
+            variant: Robot variant name (e.g., "vega_1").
+                    If None, resolves from ROBOT_CONFIG or ROBOT_NAME env vars.
+
+        Returns:
+            Configuration instance from the registry.
+
+        Raises:
+            ValueError: If variant not found or cannot be resolved.
+        """
+        if variant is None:
+            variant = RobotInfo._resolve_variant_from_env()
+        return get_robot_config(variant)
 
     @staticmethod
     def _derive_variant_from_robot_name(robot_name: str) -> str:
@@ -174,13 +210,13 @@ class RobotInfo:
 
     @property
     def robot_name(self) -> str:
-        """Get robot name if available.
+        """Get robot name from the ROBOT_NAME environment variable.
 
-        Returns robot name if it was loaded via ROBOT_NAME environment variable.
-        Returns None if config was loaded via ROBOT_CONFIG or explicit parameter.
+        Always reflects the current ROBOT_NAME env var at init time,
+        regardless of how the config was loaded (variant, configs, or env).
 
         Returns:
-            Robot name (e.g., "dm/vgabcd123456-1") or None
+            Robot name (e.g., "dm/vgabcd123456-1") or empty string
         """
         return self._robot_name_from_env
 
