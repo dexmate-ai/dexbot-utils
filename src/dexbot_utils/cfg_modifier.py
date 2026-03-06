@@ -7,6 +7,7 @@ from .configs.components.vega_1.hand import (
     F5D6HandV1Config,
     F5D6HandV2Config,
 )
+from .configs.components.vega_1.misc import EStopConfig
 from .hand import HandType
 
 
@@ -20,7 +21,7 @@ def runtime_override_robot_config(
     """Apply runtime-driven overrides to a robot's configuration.
 
     This function mutates the config in place based on runtime inputs:
-    - Optionally disables the `estop` and `heartbeat` components.
+    - Optionally disables estop monitoring and the `heartbeat` component.
     - Updates end-effector (hand) components per detected `hand_types`:
       - Disables a hand component (`enabled = False`) when the detected type
         is `HandType.UNKNOWN` (server has no topics for it).
@@ -39,17 +40,19 @@ def runtime_override_robot_config(
         enable_hand_type_override: If True, replaces an existing hand component in
             the config when it does not match the detected `HandType`. If False,
             leaves the original component and logs a warning.
-        disable_estop_checking: If True, disables the `estop` component (when
-            present) and logs a warning.
+        disable_estop_checking: If True, disables estop monitoring (when
+            present) so the background thread does not start. The component
+            itself remains enabled for state queries.
         disable_heartbeat: If True, disables the `heartbeat` component (when
             present) and logs a warning.
 
     """
 
     if disable_estop_checking:
-        if "estop" in config.components:
-            config.components["estop"].enabled = False
-            logger.warning("EStop checking is disabled via environment variable")
+        estop = config.components.get("estop")
+        if isinstance(estop, EStopConfig):
+            estop.monitoring = False
+            logger.warning("EStop monitoring is disabled via environment variable")
 
     if disable_heartbeat:
         if "heartbeat" in config.components:

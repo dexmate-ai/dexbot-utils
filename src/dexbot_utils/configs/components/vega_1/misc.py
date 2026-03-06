@@ -25,10 +25,13 @@ class EStopConfig(BaseComponentConfig):
     Attributes:
         state_sub_topic: Topic for emergency stop state feedback
         estop_query_name: Service name for emergency stop queries
+        monitoring: Whether to start the background monitor thread that
+            exits the process on physical E-Stop button press.
     """
 
     state_sub_topic: str = "state/estop"
     estop_query_name: str = "system/estop"
+    monitoring: bool = True
 
 
 @dataclass

@@ -2,6 +2,11 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.4.4] - 2026-03-05
+
+### Added
+- Monitoring field to `EStopConfig` for e-stop state monitoring.
+
 ## [0.4.3] - 2026-02-16
 
 ### Added

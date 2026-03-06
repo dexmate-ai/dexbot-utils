@@ -6,6 +6,7 @@ from dexbot_utils.configs.components.vega_1.hand import (
     F5D6HandV1Config,
     F5D6HandV2Config,
 )
+from dexbot_utils.configs.components.vega_1.misc import EStopConfig
 from dexbot_utils.configs.robots.base import BaseRobotConfig
 from dexbot_utils.hand import HandType
 
@@ -138,3 +139,36 @@ class TestExistingMismatchOverride:
             enable_hand_type_override=False,
         )
         assert config.components["left_hand"] is original
+
+
+# -------------------------------------------------------------------
+# Case: estop monitoring separation
+# -------------------------------------------------------------------
+
+
+class TestDisableEstopChecking:
+    """Test disabling estop checking via runtime override."""
+
+    def test_disable_estop_sets_monitoring_false(self):
+        """When disable_estop_checking=True, monitoring should be False but enabled stays True."""
+        config = _make_config({"estop": EStopConfig()})
+        runtime_override_robot_config(
+            config, hand_types={}, disable_estop_checking=True
+        )
+        assert config.components["estop"].enabled is True
+        assert config.components["estop"].monitoring is False
+
+    def test_disable_estop_noop_when_no_estop(self):
+        """When estop not in config, disable_estop_checking is a no-op."""
+        config = _make_config({})
+        runtime_override_robot_config(
+            config, hand_types={}, disable_estop_checking=True
+        )
+        assert "estop" not in config.components
+
+    def test_estop_unchanged_when_not_disabled(self):
+        """When disable_estop_checking=False (default), estop config is unchanged."""
+        config = _make_config({"estop": EStopConfig()})
+        runtime_override_robot_config(config, hand_types={})
+        assert config.components["estop"].enabled is True
+        assert config.components["estop"].monitoring is True
