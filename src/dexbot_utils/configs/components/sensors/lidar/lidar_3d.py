@@ -18,5 +18,9 @@ class Lidar3DConfig(BaseComponentConfig):
     """Configuration for 3D LIDAR point cloud sensor."""
 
     enabled: bool = False
-    topic: str = "sensors/lidar_3d/points"
+    topic: str = ""
     name: str = "lidar_3d"
+
+    def __post_init__(self) -> None:
+        if not self.topic:
+            self.topic = f"sensors/{self.name}/point_cloud"

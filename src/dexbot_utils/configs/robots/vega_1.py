@@ -50,7 +50,7 @@ class Vega1Config(BaseRobotConfig):
             "head_camera": ZedXCameraConfig(name="head_camera"),
             "chassis_imu": ChassisIMUConfig(name="chassis_imu"),
             "head_imu": ZedIMUConfig(name="head_imu"),
-            "front_lidar_3d": Lidar3DConfig(name="lidar_3d_front"),
+            "lidar_3d_front": Lidar3DConfig(name="lidar_3d_front"),
             "ultrasonic": UltraSonicConfig(name="ultrasonic"),
         }
     )
@@ -119,7 +119,7 @@ class Vega1DGripperConfig(Vega1Config):
             "head_camera": ZedXCameraConfig(name="head_camera"),
             "chassis_imu": ChassisIMUConfig(name="chassis_imu"),
             "head_imu": ZedIMUConfig(name="head_imu"),
-            "front_lidar_3d": Lidar3DConfig(name="lidar_3d_front"),
+            "lidar_3d_front": Lidar3DConfig(name="lidar_3d_front"),
             "ultrasonic": UltraSonicConfig(name="ultrasonic"),
             "left_wrist_camera": ZedXOneCameraConfig(side="left"),
             "right_wrist_camera": ZedXOneCameraConfig(side="right"),

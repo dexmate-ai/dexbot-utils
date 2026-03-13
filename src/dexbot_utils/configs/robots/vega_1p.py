@@ -48,7 +48,8 @@ class Vega1pConfig(BaseRobotConfig):
         default_factory=lambda: {
             "head_camera": ZedXCameraConfig(name="head_camera"),
             "head_imu": ZedIMUConfig(name="head_imu"),
-            "front_lidar_3d": Lidar3DConfig(name="lidar_3d_front"),
+            "lidar_3d_front": Lidar3DConfig(name="lidar_3d_front"),
+            "lidar_3d_back": Lidar3DConfig(name="lidar_3d_back")
         }
     )
 
@@ -115,7 +116,8 @@ class Vega1pDGripperConfig(Vega1pConfig):
         default_factory=lambda: {
             "head_camera": ZedXCameraConfig(name="head_camera"),
             "head_imu": ZedIMUConfig(name="head_imu"),
-            "front_lidar_3d": Lidar3DConfig(name="lidar_3d_front"),
+            "lidar_3d_front": Lidar3DConfig(name="lidar_3d_front"),
+            "lidar_3d_back": Lidar3DConfig(name="lidar_3d_back"),
             "left_wrist_camera": ZedXOneCameraConfig(side="left"),
             "right_wrist_camera": ZedXOneCameraConfig(side="right"),
         }
