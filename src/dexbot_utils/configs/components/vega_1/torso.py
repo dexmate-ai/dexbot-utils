@@ -20,6 +20,8 @@ class Vega1TorsoConfig(BaseJointComponentConfig):
     pv_mode: bool = True
     state_sub_topic: str = "state/torso"
     control_pub_topic: str = "control/torso"
+    temperature_sub_topic: str = "state/torso/temperature"
+    idle_mode_query: str = "system/torso/idle_mode"
 
     pose_pool: dict[str, list[float]] = field(
         default_factory=lambda: {

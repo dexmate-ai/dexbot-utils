@@ -49,7 +49,9 @@ class Vega1pConfig(BaseRobotConfig):
             "head_camera": ZedXCameraConfig(name="head_camera"),
             "head_imu": ZedIMUConfig(name="head_imu"),
             "lidar_3d_front": Lidar3DConfig(name="lidar_3d_front"),
-            "lidar_3d_back": Lidar3DConfig(name="lidar_3d_back")
+            "lidar_3d_back": Lidar3DConfig(name="lidar_3d_back"),
+            "left_wrist_camera": ZedXOneCameraConfig(side="left"),
+            "right_wrist_camera": ZedXOneCameraConfig(side="right"),
         }
     )
 
@@ -109,16 +111,5 @@ class Vega1pDGripperConfig(Vega1pConfig):
             "battery": BatteryConfig(),
             "estop": EStopConfig(),
             "heartbeat": HeartbeatConfig(),
-        }
-    )
-
-    sensors: dict[str, BaseComponentConfig] = field(
-        default_factory=lambda: {
-            "head_camera": ZedXCameraConfig(name="head_camera"),
-            "head_imu": ZedIMUConfig(name="head_imu"),
-            "lidar_3d_front": Lidar3DConfig(name="lidar_3d_front"),
-            "lidar_3d_back": Lidar3DConfig(name="lidar_3d_back"),
-            "left_wrist_camera": ZedXOneCameraConfig(side="left"),
-            "right_wrist_camera": ZedXOneCameraConfig(side="right"),
         }
     )

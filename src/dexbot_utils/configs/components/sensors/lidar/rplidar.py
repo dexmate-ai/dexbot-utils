@@ -16,5 +16,5 @@ from ...base import BaseComponentConfig
 @dataclass
 class RPLidarConfig(BaseComponentConfig):
     enabled: bool = False
-    topic: str = "sensors/lidar_front/scan"
+    topic: str = "sensors/lidar_2d_front/scan"
     name: str = "rplidar"

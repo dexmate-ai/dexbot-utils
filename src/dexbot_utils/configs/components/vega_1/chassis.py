@@ -41,6 +41,9 @@ class Vega1ChassisConfig(BaseJointComponentConfig):
     drive_control_pub_topic: str = "control/chassis/drive"
     drive_state_sub_topic: str = "state/chassis/drive"
 
+    steer_temperature_sub_topic: str = "state/chassis/steer/temperature"
+    drive_temperature_sub_topic: str = "state/chassis/drive/temperature"
+
     @property
     def joints(self) -> list[str]:
         """Return all chassis joints (steer + drive)."""

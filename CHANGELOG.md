@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.5.0] - 2026-06-01
+
+### Added
+- Temperature subscription topics for Vega-1 components: `temperature_sub_topic` on arm, head, and torso configs, plus `steer_temperature_sub_topic` and `drive_temperature_sub_topic` on the chassis config.
+- `idle_mode_query` topic to the torso config for the torso auto-idle service.
+
+### Fixed
+- 2D LiDAR and gripper configuration bugs, including the front 2D LiDAR scan topic and wrist camera setup.
+- Sensor configuration bugs across Vega-1, Vega-1P, and Vega-1U robot variants.
+
 ## [0.4.4] - 2026-03-05
 
 ### Added

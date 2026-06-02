@@ -50,6 +50,8 @@ class Vega1UConfig(BaseRobotConfig):
     sensors: dict[str, BaseComponentConfig] = field(
         default_factory=lambda: {
             "head_camera": ZedXCameraConfig(name="head_camera"),
+            "left_wrist_camera": ZedXOneCameraConfig(side="left"),
+            "right_wrist_camera": ZedXOneCameraConfig(side="right"),
         }
     )
 
@@ -90,13 +92,5 @@ class Vega1UDGripperConfig(Vega1UConfig):
             "right_hand": DexDGripperConfig(side="right"),
             "estop": EStopConfig(),
             "heartbeat": HeartbeatConfig(),
-        }
-    )
-
-    sensors: dict[str, BaseComponentConfig] = field(
-        default_factory=lambda: {
-            "head_camera": ZedXCameraConfig(name="head_camera"),
-            "left_wrist_camera": ZedXOneCameraConfig(side="left"),
-            "right_wrist_camera": ZedXOneCameraConfig(side="right"),
         }
     )

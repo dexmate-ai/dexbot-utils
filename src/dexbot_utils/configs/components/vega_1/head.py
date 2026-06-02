@@ -23,6 +23,7 @@ class Vega1HeadConfig(BaseJointComponentConfig):
     state_sub_topic: str = "state/head"
     control_pub_topic: str = "control/head"
     set_mode_query: str = "mode/head"
+    temperature_sub_topic: str = "state/head/temperature"
     pose_pool: dict[str, list[float]] = field(
         default_factory=lambda: {
             "home": [0.0, 0.0, 0.0],

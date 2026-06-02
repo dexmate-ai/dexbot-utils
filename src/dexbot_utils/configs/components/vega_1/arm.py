@@ -105,3 +105,7 @@ class Vega1ArmConfig(BaseJointComponentConfig):
     @property
     def ee_pass_through_state_sub_topic(self) -> str:
         return f"state/ee_pass_through/{self.side}"
+
+    @property
+    def temperature_sub_topic(self) -> str:
+        return f"state/arm/{self.side}/temperature"
