@@ -2,6 +2,11 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.5.1] - 2026-07-19
+
+### Added
+- `DexSGripperConfig.grasp_torque`: normalized grip-force limit in `[0, 1]` (default `0.2`) applied on every gripper position command while the gripper runs in `"pvt"` (position-velocity-torque) mode. Lets grip force be tuned per robot/gripper instead of being hardcoded on the client side. The value is validated to the `[0, 1]` range at construction (`DexDGripperConfig` inherits the check).
+
 ## [0.5.0] - 2026-06-01
 
 ### Added

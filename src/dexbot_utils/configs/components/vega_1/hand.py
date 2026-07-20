@@ -73,6 +73,9 @@ class DexSGripperConfig(BaseJointComponentConfig):
         pv_mode: Position-velocity control mode flag
         side: Gripper side ("left" or "right")
         pose_pool: Dictionary of predefined gripper poses with joint positions
+        grasp_torque: Normalized grip-force limit in [0, 1] applied on every
+            position command while the gripper runs in "pvt" (position-velocity-
+            torque) mode. Higher values squeeze harder.
         set_mode_query: Property returning service name for setting gripper control mode
         state_sub_topic: Property returning topic for gripper state feedback
         control_pub_topic: Property returning topic for gripper control commands
@@ -87,6 +90,13 @@ class DexSGripperConfig(BaseJointComponentConfig):
             "close": [0.0],
         }
     )
+    grasp_torque: float = 0.2
+
+    def __post_init__(self) -> None:
+        if not 0.0 <= self.grasp_torque <= 1.0:
+            raise ValueError(
+                f"grasp_torque must be in [0, 1], got {self.grasp_torque}."
+            )
 
     @property
     def set_mode_query(self) -> str:
