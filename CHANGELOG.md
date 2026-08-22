@@ -2,6 +2,11 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.5.2] - 2026-08-05
+
+### Added
+- Grasp-torque bounds as class attributes on `DexSGripperConfig`: `GRASP_TORQUE_MIN`, `GRASP_TORQUE_MAX`, and `GRASP_TORQUE_HIGH_THRESHOLD` (`DexDGripperConfig` inherits them). They are `ClassVar`s, so they describe the gripper without becoming constructor arguments, and `__post_init__` validates `grasp_torque` against them. Clients read the safe range off the gripper config they already hold instead of duplicating the numbers or importing separate module constants.
+
 ## [0.5.1] - 2026-07-19
 
 ### Added
