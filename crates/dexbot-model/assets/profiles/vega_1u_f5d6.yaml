@@ -1,0 +1,7 @@
+schema_version: 1
+extends:
+- common/vega_upper_body.yaml
+- common/vega_hands_f5d6.yaml
+robot:
+  model: vega_1u
+  urdf: package://dexmate_urdf/robots/humanoid/vega_1u/vega_1u_f5d6.urdf

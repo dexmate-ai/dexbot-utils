@@ -1,0 +1,7 @@
+cmake_minimum_required(VERSION 3.20)
+project(dexbot_example LANGUAGES CXX)
+find_package(dexbot CONFIG REQUIRED)
+add_executable(inspect_model inspect_model.cpp)
+target_link_libraries(inspect_model PRIVATE dexbot::model)
+enable_testing()
+add_test(NAME inspect_model COMMAND inspect_model)

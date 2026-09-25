@@ -1,0 +1,8 @@
+schema_version: 1
+extends:
+- common/vega_upper_body.yaml
+- common/vega_mobile_base.yaml
+- common/vega_1p_sensors.yaml
+robot:
+  model: vega_1p
+  urdf: package://dexmate_urdf/robots/humanoid/vega_1p/vega_1p.urdf

@@ -1,0 +1,11 @@
+@PACKAGE_INIT@
+if(NOT TARGET dexbot::model)
+  set_and_check(_dexbot_include "@PACKAGE_CMAKE_INSTALL_INCLUDEDIR@")
+  set_and_check(_dexbot_library "@PACKAGE_CMAKE_INSTALL_LIBDIR@/@CMAKE_SHARED_LIBRARY_PREFIX@dexbot_model@CMAKE_SHARED_LIBRARY_SUFFIX@")
+  add_library(dexbot::model SHARED IMPORTED)
+  set_target_properties(dexbot::model PROPERTIES IMPORTED_LOCATION "${_dexbot_library}"
+    INTERFACE_INCLUDE_DIRECTORIES "${_dexbot_include}" INTERFACE_COMPILE_FEATURES cxx_std_17)
+  unset(_dexbot_include)
+  unset(_dexbot_library)
+endif()
+check_required_components(dexbot)

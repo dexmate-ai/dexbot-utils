@@ -1,0 +1,64 @@
+{
+  "$id": "https://dexmate.ai/schema/robot-profile-v1.json",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": false,
+  "properties": {
+    "components": {
+      "type": "object"
+    },
+    "extends": {
+      "items": {
+        "type": "string"
+      },
+      "type": "array"
+    },
+    "intent_profiles": {
+      "type": "object"
+    },
+    "joint_groups": {
+      "additionalProperties": {
+        "items": {
+          "minLength": 1,
+          "type": "string"
+        },
+        "minItems": 1,
+        "type": "array"
+      },
+      "type": "object"
+    },
+    "querables": {
+      "type": "object"
+    },
+    "robot": {
+      "type": "object",
+      "properties": {
+        "model": {
+          "type": "string",
+          "minLength": 1
+        }
+      },
+      "required": [
+        "model"
+      ]
+    },
+    "runtime": {
+      "type": "object"
+    },
+    "safety": {
+      "type": "object"
+    },
+    "schema_version": {
+      "const": 1
+    },
+    "sensors": {
+      "type": "object"
+    }
+  },
+  "required": [
+    "schema_version",
+    "robot"
+  ],
+  "title": "Dexbot Robot Profile v1",
+  "type": "object",
+  "description": "Schema for a composed source document after extends fragments have been merged; not for individual fragments or overlays."
+}

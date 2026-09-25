@@ -1,0 +1,381 @@
+# Shared Vega upper body: arms, head, safety components, head/wrist
+# cameras, runtime defaults, querables, and intent profiles.
+robot:
+  namespace: null
+  profile_version: 0.1.0
+  asset_version: legacy-dexmate-urdf
+runtime:
+  readiness: required_components
+  default_subscription_policy: auto
+  state_idle_timeout_ms: 5000
+components:
+  left_arm:
+    driver: standard.managed_joint
+    enabled: true
+    required: true
+    roles:
+    - left_arm
+    - arm
+    - left
+    capabilities:
+    - joint_state
+    - joint_position_command
+    - managed_joint_motion
+    - trajectory_execution
+    - mode_control
+    - temperature
+    - force_torque
+    endpoints:
+      brake_query:
+        kind: service
+        value: system/arm_brake/left
+      control_pub_topic:
+        kind: publisher_topic
+        value: control/arm/left
+      ee_baud_rate_query:
+        kind: service
+        value: system/ee_baud_rate/left
+      ee_pass_through_pub_topic:
+        kind: publisher_topic
+        value: control/ee_pass_through/left
+      ee_pass_through_state_sub_topic:
+        kind: subscriber_topic
+        value: state/ee_pass_through/left
+      force_torque_sensor_query:
+        kind: service
+        value: mode/force_torque_sensor/left
+      pid_query:
+        kind: service
+        value: system/arm_pid/left
+      set_mode_query:
+        kind: service
+        value: mode/arm/left
+      state_sub_topic:
+        kind: subscriber_topic
+        value: state/arm/left
+      temperature_sub_topic:
+        kind: subscriber_topic
+        value: state/arm/left/temperature
+      wrench_sub_topic:
+        kind: subscriber_topic
+        value: state/wrench/left
+      wrist_button_sub_topic:
+        kind: subscriber_topic
+        value: state/wrist_button/left
+      motion_target:
+        kind: publisher_topic
+        value: motion/target/arm/left
+      motion_trajectory:
+        kind: publisher_topic
+        value: motion/trajectory/arm/left
+      motion_status:
+        kind: subscriber_topic
+        value: motion/status/arm/left
+    joints:
+      names:
+      - L_arm_j1
+      - L_arm_j2
+      - L_arm_j3
+      - L_arm_j4
+      - L_arm_j5
+      - L_arm_j6
+      - L_arm_j7
+    metadata:
+      default_control_hz: 100
+      enable_ee_pass_through: true
+      pose_pool:
+        L_shape:
+          joint_pos: [0.064, 0.3, 0.0, -1.556, 1.271, 0.0, 0.0]
+          frame: torso_horizontal
+        folded:
+          joint_pos: [1.57079, 0.0, 0, -3.07, 0, 0, -0.69813]
+          frame: joint
+        folded_closed_hand:
+          joint_pos: [1.57079, 0.0, 0, -3.07, 0, 0, -0.9]
+          frame: joint
+        lift_up:
+          joint_pos: [0.064, 0.3, 0.0, -2.756, 1.271, 0.0, 0.0]
+          frame: torso_horizontal
+        zero:
+          joint_pos: [0, 0, 0, 0, 0, 0, 0]
+          frame: torso_upright
+      pv_mode: false
+      side: left
+  right_arm:
+    driver: standard.managed_joint
+    enabled: true
+    required: true
+    roles:
+    - right_arm
+    - arm
+    - right
+    capabilities:
+    - joint_state
+    - joint_position_command
+    - managed_joint_motion
+    - trajectory_execution
+    - mode_control
+    - temperature
+    - force_torque
+    endpoints:
+      brake_query:
+        kind: service
+        value: system/arm_brake/right
+      control_pub_topic:
+        kind: publisher_topic
+        value: control/arm/right
+      ee_baud_rate_query:
+        kind: service
+        value: system/ee_baud_rate/right
+      ee_pass_through_pub_topic:
+        kind: publisher_topic
+        value: control/ee_pass_through/right
+      ee_pass_through_state_sub_topic:
+        kind: subscriber_topic
+        value: state/ee_pass_through/right
+      force_torque_sensor_query:
+        kind: service
+        value: mode/force_torque_sensor/right
+      pid_query:
+        kind: service
+        value: system/arm_pid/right
+      set_mode_query:
+        kind: service
+        value: mode/arm/right
+      state_sub_topic:
+        kind: subscriber_topic
+        value: state/arm/right
+      temperature_sub_topic:
+        kind: subscriber_topic
+        value: state/arm/right/temperature
+      wrench_sub_topic:
+        kind: subscriber_topic
+        value: state/wrench/right
+      wrist_button_sub_topic:
+        kind: subscriber_topic
+        value: state/wrist_button/right
+      motion_target:
+        kind: publisher_topic
+        value: motion/target/arm/right
+      motion_trajectory:
+        kind: publisher_topic
+        value: motion/trajectory/arm/right
+      motion_status:
+        kind: subscriber_topic
+        value: motion/status/arm/right
+    joints:
+      names:
+      - R_arm_j1
+      - R_arm_j2
+      - R_arm_j3
+      - R_arm_j4
+      - R_arm_j5
+      - R_arm_j6
+      - R_arm_j7
+    metadata:
+      default_control_hz: 100
+      enable_ee_pass_through: true
+      pose_pool:
+        L_shape:
+          joint_pos: [-0.064, -0.3, -0.0, -1.556, -1.271, -0.0, -0.0]
+          frame: torso_horizontal
+        folded:
+          joint_pos: [-1.57079, -0.0, 0, -3.07, 0, 0, 0.69813]
+          frame: joint
+        folded_closed_hand:
+          joint_pos: [-1.57079, -0.0, 0, -3.07, 0, 0, 0.9]
+          frame: joint
+        lift_up:
+          joint_pos: [-0.064, -0.3, -0.0, -2.756, -1.271, -0.0, -0.0]
+          frame: torso_horizontal
+        zero:
+          joint_pos: [0, 0, 0, 0, 0, 0, 0]
+          frame: torso_upright
+      pv_mode: false
+      side: right
+  head:
+    driver: standard.managed_joint
+    enabled: true
+    required: true
+    roles:
+    - head
+    capabilities:
+    - joint_state
+    - joint_position_command
+    - managed_joint_motion
+    - trajectory_execution
+    - mode_control
+    - temperature
+    endpoints:
+      control_pub_topic:
+        kind: publisher_topic
+        value: control/head
+      set_mode_query:
+        kind: service
+        value: mode/head
+      state_sub_topic:
+        kind: subscriber_topic
+        value: state/head
+      temperature_sub_topic:
+        kind: subscriber_topic
+        value: state/head/temperature
+      motion_target:
+        kind: publisher_topic
+        value: motion/target/head
+      motion_trajectory:
+        kind: publisher_topic
+        value: motion/trajectory/head
+      motion_status:
+        kind: subscriber_topic
+        value: motion/status/head
+    joints:
+      names:
+      - head_j1
+      - head_j2
+      - head_j3
+    metadata:
+      pose_pool:
+        home:
+          joint_pos: [0.0, 0.0, 0.0]
+          frame: torso_horizontal
+        tucked:
+          joint_pos: [0.0, 0.0, -1.37]
+          frame: joint
+      pv_mode: true
+  estop:
+    driver: standard.estop
+    enabled: true
+    required: true
+    roles:
+    - estop
+    capabilities:
+    - emergency_stop
+    endpoints:
+      estop_query_name:
+        kind: service
+        value: system/estop
+      state_sub_topic:
+        kind: subscriber_topic
+        value: state/estop
+    safety:
+      estop_query_name: system/estop
+      monitoring: true
+  heartbeat:
+    driver: standard.heartbeat
+    enabled: true
+    required: true
+    roles:
+    - heartbeat
+    capabilities:
+    - heartbeat
+    endpoints:
+      heartbeat_topic:
+        kind: topic
+        value: heartbeat
+    safety:
+      heartbeat_topic: heartbeat
+      timeout_seconds: 1.0
+sensors:
+  head_camera:
+    driver: standard.zed_camera
+    enabled: false
+    required: false
+    roles:
+    - head_camera
+    capabilities:
+    - camera_stream
+    endpoints:
+      depth_topic:
+        kind: topic
+        value: sensors/head_camera/depth
+      left_rgb_rtc_channel:
+        kind: channel
+        value: sensors/head_camera/left_rgb_rtc
+      left_rgb_topic:
+        kind: topic
+        value: sensors/head_camera/left_rgb
+      right_rgb_rtc_channel:
+        kind: channel
+        value: sensors/head_camera/right_rgb_rtc
+      right_rgb_topic:
+        kind: topic
+        value: sensors/head_camera/right_rgb
+    metadata:
+      enable_depth: true
+      enable_rgb: true
+      name: head_camera
+  left_wrist_camera:
+    driver: standard.zed_camera
+    enabled: false
+    required: false
+    roles:
+    - left_wrist_camera
+    - wrist_camera
+    - left
+    capabilities:
+    - camera_stream
+    endpoints:
+      rgb_rtc_channel:
+        kind: channel
+        value: sensors/wrist_camera/rgb_rtc
+      rgb_topic:
+        kind: topic
+        value: sensors/left_wrist_camera/rgb
+    metadata:
+      name: wrist_camera
+      side: left
+  right_wrist_camera:
+    driver: standard.zed_camera
+    enabled: false
+    required: false
+    roles:
+    - right_wrist_camera
+    - wrist_camera
+    - right
+    capabilities:
+    - camera_stream
+    endpoints:
+      rgb_rtc_channel:
+        kind: channel
+        value: sensors/wrist_camera/rgb_rtc
+      rgb_topic:
+        kind: topic
+        value: sensors/right_wrist_camera/rgb
+    metadata:
+      name: wrist_camera
+      side: right
+safety:
+  heartbeat_failure_action: request_process_termination
+querables:
+  chassis_led: system/led
+  clear_error: system/clear_error
+  hand_info: info/hand_type
+  reboot: system/reboot
+  soc_ntp: time/soc
+  status_info: info/status
+  version_info: info/versions
+intent_profiles:
+  camera_stream:
+  - large_live_stream
+  - latest
+  heartbeat_liveliness:
+  - heartbeat
+  - latest
+  high_rate_joint_command:
+  - high_rate_joint_command
+  - latest
+  joint_state:
+  - joint_state
+  - latest
+  large_live_stream:
+  - large_live_stream
+  - latest
+  logs_diagnostics:
+  - diagnostics
+  - ring
+  mode_command:
+  - mode_command
+  - blocking
+  safety_command:
+  - safety_command
+  - blocking

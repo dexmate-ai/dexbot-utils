@@ -1,0 +1,59 @@
+# Vega-1 platform sensors: chassis IMU, head IMU, 2D front lidar, and
+# ultrasonic array.
+sensors:
+  chassis_imu:
+    driver: standard.imu
+    enabled: false
+    required: false
+    roles:
+    - chassis_imu
+    capabilities:
+    - imu
+    endpoints:
+      topic:
+        kind: topic
+        value: state/chassis_imu
+    metadata:
+      name: chassis_imu
+  head_imu:
+    driver: standard.imu
+    enabled: false
+    required: false
+    roles:
+    - head_imu
+    capabilities:
+    - imu
+    endpoints:
+      topic:
+        kind: topic
+        value: sensors/head_camera/imu
+    metadata:
+      name: head_imu
+  lidar_2d_front:
+    driver: standard.lidar_2d
+    enabled: false
+    required: false
+    roles:
+    - lidar_2d_front
+    capabilities:
+    - lidar_2d
+    endpoints:
+      topic:
+        kind: topic
+        value: sensors/lidar_2d_front/scan
+    metadata:
+      name: lidar_2d_front
+  ultrasonic:
+    driver: standard.ultrasonic
+    enabled: false
+    required: false
+    roles:
+    - ultrasonic
+    capabilities:
+    - ultrasonic
+    endpoints:
+      topic:
+        kind: topic
+        value: state/ultrasonic
+    metadata:
+      name: ultrasonic

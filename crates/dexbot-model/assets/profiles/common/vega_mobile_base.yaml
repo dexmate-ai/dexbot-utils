@@ -1,0 +1,141 @@
+# Shared Vega mobile platform: torso, chassis, and battery.
+components:
+  torso:
+    driver: standard.managed_joint
+    enabled: true
+    required: true
+    roles:
+    - torso
+    capabilities:
+    - joint_state
+    - joint_position_command
+    - managed_joint_motion
+    - trajectory_execution
+    - mode_control
+    - temperature
+    endpoints:
+      control_pub_topic:
+        kind: publisher_topic
+        value: control/torso
+      idle_mode_query:
+        kind: service
+        value: system/torso/idle_mode
+      state_sub_topic:
+        kind: subscriber_topic
+        value: state/torso
+      temperature_sub_topic:
+        kind: subscriber_topic
+        value: state/torso/temperature
+      motion_target:
+        kind: publisher_topic
+        value: motion/target/torso
+      motion_trajectory:
+        kind: publisher_topic
+        value: motion/trajectory/torso
+      motion_status:
+        kind: subscriber_topic
+        value: motion/status/torso
+    joints:
+      names:
+      - torso_j1
+      - torso_j2
+      - torso_j3
+    metadata:
+      pose_pool:
+        crouch20_high:
+          joint_pos: [0.78, 1.57, 0.44]
+          frame: joint
+        crouch20_low:
+          joint_pos: [0.0, 0.0, -0.35]
+          frame: joint
+        crouch20_medium:
+          joint_pos: [0.52, 1.05, 0.18]
+          frame: joint
+        crouch45_high:
+          joint_pos: [0.78, 1.57, 0]
+          frame: joint
+        crouch45_low:
+          joint_pos: [0.0, 0.0, -0.79]
+          frame: joint
+        crouch45_medium:
+          joint_pos: [0.52, 1.05, -0.26]
+          frame: joint
+        crouch90_high:
+          joint_pos: [0.78, 1.57, -0.78]
+          frame: joint
+        crouch90_low:
+          joint_pos: [0.0, 0.0, -1.57]
+          frame: joint
+        crouch90_medium:
+          joint_pos: [0.52, 1.05, -1.04]
+          frame: joint
+        folded:
+          joint_pos: [0.0, 0.0, -1.57]
+          frame: joint
+        home:
+          joint_pos: [0.0, 0.0, 0.0]
+          frame: joint
+      pv_mode: true
+  chassis:
+    driver: standard.chassis
+    enabled: true
+    required: true
+    roles:
+    - chassis
+    capabilities:
+    - joint_state
+    - cartesian_velocity_2d
+    - temperature
+    endpoints:
+      drive_control_pub_topic:
+        kind: publisher_topic
+        value: control/chassis/drive
+      drive_state_sub_topic:
+        kind: subscriber_topic
+        value: state/chassis/drive
+      drive_temperature_sub_topic:
+        kind: subscriber_topic
+        value: state/chassis/drive/temperature
+      steer_control_pub_topic:
+        kind: publisher_topic
+        value: control/chassis/steer
+      steer_state_sub_topic:
+        kind: subscriber_topic
+        value: state/chassis/steer
+      steer_temperature_sub_topic:
+        kind: subscriber_topic
+        value: state/chassis/steer/temperature
+    joints:
+      names:
+      - L_wheel_j1
+      - R_wheel_j1
+      - L_wheel_j2
+      - R_wheel_j2
+    metadata:
+      center_to_wheel_axis_dist: 0.219
+      drive_joints:
+      - L_wheel_j2
+      - R_wheel_j2
+      max_linear_vel: 0.8
+      max_steering_angle: 2.35
+      pv_mode: false
+      steer_joints:
+      - L_wheel_j1
+      - R_wheel_j1
+      wheels_dist: 0.45
+  battery:
+    driver: standard.battery
+    safety:
+      monitoring: true
+      low_battery_percentage: 20
+      battery_hysteresis_percentage: 5
+    enabled: true
+    required: true
+    roles:
+    - battery
+    capabilities:
+    - battery
+    endpoints:
+      state_sub_topic:
+        kind: subscriber_topic
+        value: state/bms

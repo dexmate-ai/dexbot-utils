@@ -1,0 +1,10 @@
+name: Packages are published by private CI
+on:
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  information:
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo 'Packages and SDKs are built and published by the private release pipeline.'

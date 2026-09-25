@@ -1,0 +1,84 @@
+# F5D6 five-finger hands for any Vega variant.
+components:
+  left_hand:
+    driver: standard.f5d6_hand
+    enabled: true
+    required: true
+    roles:
+    - left_hand
+    - hand
+    - left
+    capabilities:
+    - joint_state
+    - joint_position_command
+    - gripper
+    - force_torque
+    endpoints:
+      control_pub_topic:
+        kind: publisher_topic
+        value: control/hand/left
+      state_sub_topic:
+        kind: subscriber_topic
+        value: state/hand/left
+      touch_sensor_sub_topic:
+        kind: subscriber_topic
+        value: state/hand/left/touch
+    joints:
+      names:
+      - L_th_j1
+      - L_ff_j1
+      - L_mf_j1
+      - L_rf_j1
+      - L_lf_j1
+      - L_th_j0
+    metadata:
+      pose_pool:
+        close:
+          joint_pos: [-0.1, -1.0946, -1.0844, -1.0154, -1.0118, 0.84]
+          frame: joint
+        open:
+          joint_pos: [0.1834, 0.2891, 0.2801, 0.284, 0.2811, -0.0158]
+          frame: joint
+      pv_mode: false
+      side: left
+  right_hand:
+    driver: standard.f5d6_hand
+    enabled: true
+    required: true
+    roles:
+    - right_hand
+    - hand
+    - right
+    capabilities:
+    - joint_state
+    - joint_position_command
+    - gripper
+    - force_torque
+    endpoints:
+      control_pub_topic:
+        kind: publisher_topic
+        value: control/hand/right
+      state_sub_topic:
+        kind: subscriber_topic
+        value: state/hand/right
+      touch_sensor_sub_topic:
+        kind: subscriber_topic
+        value: state/hand/right/touch
+    joints:
+      names:
+      - R_th_j1
+      - R_ff_j1
+      - R_mf_j1
+      - R_rf_j1
+      - R_lf_j1
+      - R_th_j0
+    metadata:
+      pose_pool:
+        close:
+          joint_pos: [-0.1, -1.0946, -1.0844, -1.0154, -1.0118, 0.84]
+          frame: joint
+        open:
+          joint_pos: [0.1834, 0.2891, 0.2801, 0.284, 0.2811, -0.0158]
+          frame: joint
+      pv_mode: false
+      side: right

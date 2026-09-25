@@ -1,0 +1,22 @@
+[package]
+name = "dexbot-cli"
+version.workspace = true
+edition.workspace = true
+rust-version = "1.85"
+license.workspace = true
+repository.workspace = true
+description = "Native CLI for Dexmate robot model inspection"
+readme = "README.md"
+include = ["src/**", "assets/**", "examples/**", "Cargo.toml", "Cargo.lock", "README.md", "LICENSE"]
+
+[[bin]]
+name = "dexbot"
+path = "src/main.rs"
+
+[dependencies]
+clap.workspace = true
+dexbot-model = { version = "=0.2.3", path = "../dexbot-model" }
+serde_json.workspace = true
+
+[dev-dependencies]
+tempfile.workspace = true

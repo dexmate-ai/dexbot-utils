@@ -1,0 +1,44 @@
+# Vega-1P platform sensors: head IMU and front/back 3D lidars.
+sensors:
+  head_imu:
+    driver: standard.imu
+    enabled: false
+    required: false
+    roles:
+    - head_imu
+    capabilities:
+    - imu
+    endpoints:
+      topic:
+        kind: topic
+        value: sensors/head_camera/imu
+    metadata:
+      name: head_imu
+  lidar_3d_front:
+    driver: standard.lidar_3d
+    enabled: false
+    required: false
+    roles:
+    - lidar_3d_front
+    capabilities:
+    - lidar_3d
+    endpoints:
+      topic:
+        kind: topic
+        value: sensors/lidar_3d_front/point_cloud
+    metadata:
+      name: lidar_3d_front
+  lidar_3d_back:
+    driver: standard.lidar_3d
+    enabled: false
+    required: false
+    roles:
+    - lidar_3d_back
+    capabilities:
+    - lidar_3d
+    endpoints:
+      topic:
+        kind: topic
+        value: sensors/lidar_3d_back/point_cloud
+    metadata:
+      name: lidar_3d_back

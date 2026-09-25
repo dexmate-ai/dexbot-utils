@@ -1,173 +1,163 @@
 <div align="center">
-  <h1>Dexmate Robot Configuration Utilities</h1>
+  <h1>Dexmate Robot Model Utilities</h1>
 </div>
 
-![Python](https://img.shields.io/badge/python-3.10%20|%203.11%20|%203.12%20|%203.13|%203.14-blue)
+The robot model behind every Dexmate client: built-in robot profiles, their
+resolution into an operational configuration, URDF-backed joint metadata, and
+a CLI for inspecting, validating, diffing and migrating profiles.
 
-Type-safe dataclass configurations and a unified interface for accessing Dexmate robot information.
+The model implementation is Rust, with a C ABI and a C++17 wrapper. There is
+no standalone Python library: Python runtime consumers get model data through [dexcontrol](https://github.com/dexmate-ai/dexcontrol), which
+embeds this crate and exposes it in every language it supports.
 
-## Installation
+| You are writing… | Use |
+| --- | --- |
+| Rust model/configuration tooling | `dexbot-model` from crates.io |
+| Python that controls a robot | `dexcontrol.robot_config()`, `dexcontrol.available_profiles()` |
+| C++ model/configuration tooling | This repository’s SDK (`dexbot::model`) |
+| Shell scripts, CI, operators | the `dexbot` CLI |
 
-```bash
-pip install dexbot-utils
-```
-
-## Usage
-
-### RobotInfo (Recommended)
-
-```python
-from dexbot_utils import RobotInfo
-
-# Load by variant name
-robot = RobotInfo("vega_1")
-
-# Basic properties
-print(robot.robot_model)     # "vega_1"
-print(robot.robot_type)      # "vega"
-print(robot.robot_version)   # "1"
-
-# Component access
-print(robot.has_left_arm)    # True
-print(robot.get_component_list())
-# ['left_arm', 'right_arm', 'torso', 'chassis', 'head', ...]
-
-# Get component details
-joints = robot.get_component_joints("left_arm")
-# ['L_arm_j1', 'L_arm_j2', ..., 'L_arm_j7']
-
-dof = robot.get_component_dof("left_arm")  # 7
-
-# Access component config directly
-arm_config = robot.get_component_config("left_arm")
-print(arm_config.side)       # "left"
-print(arm_config.pv_mode)    # False
-
-# URDF queries (if URDF is loaded)
-# URDF queries (if URDF is loaded)
-if robot.has_urdf:
-    joint_limits = robot.get_joint_limits()
-    pos_limits = robot.get_joint_pos_limits()
-    vel_limits = robot.get_joint_vel_limits()
-    link_names = robot.get_link_names()
-```
-
-### Environment Variables
-
-Load configuration from environment:
+## Install in a Rust project
 
 ```bash
-export ROBOT_CONFIG=vega_1
-# or derive from robot name
-export ROBOT_NAME=dm/vgabcd123456-1  # -> vega_1
+cargo add dexbot-model
 ```
 
-```python
-robot = RobotInfo()  # auto-loads from env
+Source is published to crates.io. Profiles and URDFs are embedded; neither
+DexComm nor a robot connection is required. The command above becomes available
+when the first crate release is published.
+
+## Install in a C++ project
+
+Download the matching **dexbot-sdk** archive from
+[GitHub Releases](https://github.com/dexmate-ai/dexbot-utils/releases).
+SDK names follow `dexbot-sdk-v0.2.3-linux-x86_64.tar.gz` (also Linux aarch64,
+macOS arm64 and macOS x86_64). A separate `dexbot-cli` archive contains just the
+CLI. Check the SHA-256 sidecar before extracting. These assets are produced by
+the release workflow; adding this CI does not itself publish a release.
+
+```bash
+sha256sum -c dexbot-sdk-v0.2.3-linux-x86_64.tar.gz.sha256
+# On macOS: shasum -a 256 -c ARCHIVE.tar.gz.sha256
+tar -xzf dexbot-sdk-v0.2.3-linux-x86_64.tar.gz
+cmake -S . -B build -DCMAKE_PREFIX_PATH="$PWD/dexbot-sdk-v0.2.3-linux-x86_64"
+cmake --build build
 ```
 
-### Direct Config Access
+In your application's CMakeLists.txt:
 
-For direct access to configuration dataclasses:
-
-```python
-from dexbot_utils.configs import get_robot_config, get_available_variants
-
-# List available variants
-variants = get_available_variants()
-# ['vega_1', 'vega_1_gripper', ...]
-
-# Get config directly
-config = get_robot_config("vega_1")
-left_arm = config.components["left_arm"]
-print(left_arm.joints)
+```cmake
+find_package(dexbot 0.2 CONFIG REQUIRED)
+target_link_libraries(my_app PRIVATE dexbot::model)
 ```
+
+```cpp
+#include <dexbot/model.hpp>
+
+auto config = dexbot::RobotConfig::from_profile("vega_1p").resolve();
+auto arm = config.component("left_arm");
+for (const auto& joint : arm.joints()) {
+    // joint.name, joint.joint_type, optional lower/upper/effort/velocity
+}
+auto pose = arm.pose("zero");  // stored joint positions and their reference frame
+auto json = config.json();    // complete configuration, including advanced fields
+```
+
+C++ model loading, overlays and resolution throw `dexbot::Error` on failure.
+Components and document views retain their underlying immutable configuration.
+Model poses are stored values, not runtime torso compensation; use dexcontrol
+when resolving poses against live robot state. The public C ABI is documented
+in `bindings/c/include/dexbot.h`. ABI and SDK version checks reject incompatible
+libraries. Keep the SDK `lib/` directory available when running applications:
+the CMake build adds its runtime path, but deploying your application requires
+shipping the shared library too (or configuring an installation RPATH).
+
+Prebuilt SDKs currently target Linux with glibc 2.35+ and macOS 14+; other
+platforms should build from source. Windows and vcpkg registry publication are
+not part of this initial release. The prebuilt C++ SDK does not require Rust.
+
+### Build and install from source
+
+Requires Rust/Cargo, CMake 3.20+, and a C/C++17 compiler:
+
+```bash
+cmake -S . -B build -DCMAKE_INSTALL_PREFIX="$HOME/.local"
+cmake --build build --parallel 2
+cmake --install build
+```
+
+Use `-DCMAKE_PREFIX_PATH="$HOME/.local"` in consuming projects. See
+`examples/cpp` and `crates/dexbot-model/examples/inspect_model.rs` for matching
+profile inspection tasks. Release configuration is documented in
+[ci/README.md](ci/README.md).
+
+## Layout
+
+- `crates/dexbot-model` — the library. Profiles and URDFs are embedded at
+  compile time, so a consumer needs nothing on disk.
+- `crates/dexbot-cli` — the `dexbot` binary.
+- `crates/dexbot-model/assets/profiles` — the built-in profiles (`vega_1`,
+  `vega_1u`, `vega_1p`, and their `_f5d6` / `_gripper` hand variants) and the
+  fragments they `extends`. See its `README.md` for the profile format.
+- `robots/contracts` — frozen resolved-configuration contracts the tests pin.
+
+## Library
+
+```toml
+[dependencies]
+dexbot-model = "0.2"
+```
+
+```rust
+use dexbot_model::{available_profiles, try_profile_for_robot_name, RobotConfig};
+
+// Built-in profiles, and the one a ROBOT_NAME-style identity selects. An
+// unrecognised name is an error, never a guess.
+assert!(available_profiles().contains(&"vega_1"));
+assert_eq!(try_profile_for_robot_name("dm/vg0123456789-1u")?, "vega_1u");
+assert!(try_profile_for_robot_name("dm/vg2-000123").is_err());
+
+// Resolve a profile into the operational configuration a robot runs against.
+let resolved = RobotConfig::from_profile("vega_1")?
+    .with_sensor_enabled("head_camera")
+    .resolve()?;
+let arm = &resolved.components["left_arm"];
+println!("{:?}", arm.joints.as_ref().map(|joints| &joints.names));
+println!("{}", resolved.normalized_json()?);
+
+// A custom profile file (YAML or JSON) composed from common/*.yaml fragments.
+// To customize a complete built-in profile, apply an overlay instead:
+let customized = RobotConfig::from_profile("vega_1")?
+    .with_overlay_file("my_overlay.yaml")?
+    .resolve()?;
+let custom = RobotConfig::from_file("my_robot.yaml")?.resolve()?;
+# Ok::<(), dexbot_model::ModelError>(())
+```
+
+`package://dexmate_urdf/...` references resolve against an explicit asset
+root, then `DEXBOT_ASSET_ROOT`, then the embedded URDFs.
 
 ## CLI
 
 ```bash
-# List available configurations
-# List available configurations
-dexbot cfg list
+cargo install dexbot-cli --locked       # after registry publication
+# From a source checkout: cargo install --locked --path crates/dexbot-cli
 
-# Show configuration details
-dexbot cfg show vega_1
-```
-
-## Advance Usage: Adding New Configs
-
-### 1. Create Component Configs
-
-Define components in `configs/components/your_robot/`:
-
-```python
-# configs/components/my_robot/arm.py
-from dataclasses import dataclass
-from ..base import BaseJointComponentConfig
-
-@dataclass
-class MyArmConfig(BaseJointComponentConfig):
-    side: str = "left"
-    pv_mode: bool = False
-
-    @property
-    def joints(self) -> list[str]:
-        prefix = "L" if self.side == "left" else "R"
-        return [f"{prefix}_arm_j{i}" for i in range(1, 8)]
-```
-
-### 2. Create Robot Config
-
-Define the robot in `configs/robots/` with `@register_variant`:
-
-```python
-# configs/robots/my_robot.py
-from dataclasses import dataclass, field
-from ..registry import register_variant
-from ..components.my_robot import MyArmConfig
-from .base import BaseRobotConfig, BaseComponentConfig
-
-@register_variant("my_robot")
-@dataclass
-class MyRobotConfig(BaseRobotConfig):
-    robot_model: str = "my_robot"
-    abbr: str = "mr"
-    urdf_path: str = "robots/my_robot/robot.urdf"
-
-    components: dict[str, BaseComponentConfig] = field(
-        default_factory=lambda: {
-            "left_arm": MyArmConfig(side="left"),
-            "right_arm": MyArmConfig(side="right"),
-        }
-    )
-```
-
-### 3. Register
-
-Import in `configs/robots/__init__.py`:
-
-```python
-from .my_robot import MyRobotConfig
-```
-
-Now use it:
-
-```python
-robot = RobotInfo("my_robot")
+dexbot list                              # built-in profiles
+dexbot show vega_1                       # normalized resolved configuration
+dexbot validate my_robot.yaml            # schema and model validation
+dexbot diff vega_1 my_robot.yaml         # field-level diff of two resolutions
+dexbot diff --exit-code a.yaml b.yaml    # ...exiting 1 when they differ
+dexbot migrate my_robot.yaml             # to the current schema version
+dexbot urdf robot.urdf                   # links, joints, movable joints
+dexbot profile-for dm/vg0123456789-1p    # -> vega_1p
 ```
 
 ## Development
 
-### Setup
-
 ```bash
-# Install dev dependencies
-pip install -e ".[dev]"
-
-# Setup pre-commit hooks
-prek install
+tools/verify.sh    # fmt, clippy -D warnings, tests, 90% line coverage
 ```
-
 
 ## Licensing
 
@@ -188,3 +178,31 @@ For businesses that want to use this software in proprietary applications withou
     <a href="mailto:contact@dexmate.ai">📧 Contact Us</a> •
   </p>
 </div>
+
+### Named pose frames
+
+Each `metadata.pose_pool` entry contains `joint_pos` and `frame` together.
+Both fields are required for structured entries. Unknown fields, unknown frames,
+non-numeric values and incorrect joint counts fail model validation.
+
+```yaml
+metadata:
+  pose_pool:
+    zero:
+      joint_pos: [0, 0, 0, 0, 0, 0, 0]
+      frame: torso_upright
+    folded:
+      joint_pos: [1.57079, 0, 0, -3.07, 0, 0, -0.69813]
+      frame: joint
+```
+
+Frames are `joint`, `torso_horizontal`, or `torso_upright`. The latter two are
+model-specific torso reference conventions, not Cartesian world frames.
+Legacy array-only poses retain raw joint semantics. The separate `pose_frames`
+map is rejected: move each frame into its pose entry.
+
+Vega `folded` and `folded_closed_hand` are joint-relative. `L_shape` and `lift_up` use the `torso_horizontal` reference. `zero` stores seven zeros
+in the `torso_upright` frame: its compensation is relative to an upright torso
+(`torso_pitch - pi/2`). Passthrough returns the stored zeros. Head `home` is compensated, while `tucked` stays joint-relative.
+Consumers should resolve a named pose once and validate the resulting joint
+limits; they must not apply compensation again to a resolved target.

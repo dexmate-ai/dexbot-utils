@@ -1,0 +1,424 @@
+{
+  "$defs": {
+    "capability": {
+      "additionalProperties": false,
+      "properties": {
+        "id": {
+          "minLength": 1,
+          "type": "string"
+        },
+        "required": {
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "id",
+        "required"
+      ],
+      "type": "object"
+    },
+    "component": {
+      "additionalProperties": false,
+      "properties": {
+        "capabilities": {
+          "items": {
+            "$ref": "#/$defs/capability"
+          },
+          "type": "array"
+        },
+        "dependencies": {
+          "items": {
+            "type": "string"
+          },
+          "type": "array"
+        },
+        "driver": {
+          "minLength": 1,
+          "type": "string"
+        },
+        "enabled": {
+          "type": "boolean"
+        },
+        "endpoints": {
+          "additionalProperties": {
+            "$ref": "#/$defs/endpoint"
+          },
+          "type": "object"
+        },
+        "joints": {
+          "oneOf": [
+            {
+              "$ref": "#/$defs/joint_config"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "local": {
+          "type": "boolean"
+        },
+        "metadata": {
+          "type": "object"
+        },
+        "required": {
+          "type": "boolean"
+        },
+        "roles": {
+          "items": {
+            "type": "string"
+          },
+          "type": "array"
+        },
+        "safety": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "monitoring": {
+              "type": "boolean"
+            },
+            "estop_state_periodic": {
+              "type": "boolean"
+            },
+            "estop_query_name": {
+              "type": "string",
+              "minLength": 1
+            },
+            "heartbeat_topic": {
+              "type": "string",
+              "minLength": 1
+            },
+            "timeout_seconds": {
+              "type": "number",
+              "minimum": 0.001,
+              "maximum": 10
+            },
+            "state_max_age_seconds": {
+              "type": "number",
+              "minimum": 0.1,
+              "maximum": 60
+            },
+            "low_battery_percentage": {
+              "type": "number",
+              "exclusiveMinimum": 0,
+              "maximum": 95
+            },
+            "battery_hysteresis_percentage": {
+              "type": "number",
+              "minimum": 1,
+              "maximum": 50
+            }
+          }
+        }
+      },
+      "required": [
+        "driver",
+        "enabled",
+        "required",
+        "local",
+        "roles",
+        "capabilities",
+        "dependencies",
+        "joints",
+        "endpoints",
+        "safety",
+        "metadata"
+      ],
+      "type": "object"
+    },
+    "endpoint": {
+      "additionalProperties": false,
+      "properties": {
+        "kind": {
+          "enum": [
+            "topic",
+            "subscriber_topic",
+            "publisher_topic",
+            "service",
+            "channel"
+          ]
+        },
+        "value": {
+          "minLength": 1,
+          "type": "string"
+        }
+      },
+      "required": [
+        "kind",
+        "value"
+      ],
+      "type": "object"
+    },
+    "joint_config": {
+      "additionalProperties": false,
+      "properties": {
+        "group": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "names": {
+          "items": {
+            "minLength": 1,
+            "type": "string"
+          },
+          "type": "array"
+        },
+        "source": {
+          "type": [
+            "string",
+            "null"
+          ]
+        }
+      },
+      "required": [
+        "names",
+        "source",
+        "group"
+      ],
+      "type": "object"
+    },
+    "resolved_joint": {
+      "additionalProperties": false,
+      "properties": {
+        "effort": {
+          "type": [
+            "number",
+            "null"
+          ]
+        },
+        "joint_type": {
+          "minLength": 1,
+          "type": "string"
+        },
+        "lower": {
+          "type": [
+            "number",
+            "null"
+          ]
+        },
+        "name": {
+          "minLength": 1,
+          "type": "string"
+        },
+        "upper": {
+          "type": [
+            "number",
+            "null"
+          ]
+        },
+        "velocity": {
+          "type": [
+            "number",
+            "null"
+          ]
+        }
+      },
+      "required": [
+        "name",
+        "joint_type",
+        "lower",
+        "upper",
+        "effort",
+        "velocity"
+      ],
+      "type": "object"
+    },
+    "robot": {
+      "additionalProperties": false,
+      "properties": {
+        "asset_version": {
+          "type": "string"
+        },
+        "model": {
+          "minLength": 1,
+          "type": "string"
+        },
+        "namespace": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "profile_version": {
+          "type": "string"
+        },
+        "urdf": {
+          "type": [
+            "string",
+            "null"
+          ]
+        }
+      },
+      "required": [
+        "model",
+        "namespace",
+        "urdf",
+        "profile_version",
+        "asset_version"
+      ],
+      "type": "object"
+    },
+    "safety_action": {
+      "enum": [
+        "stop_motion",
+        "shutdown_robot",
+        "activate_software_estop",
+        "request_process_termination",
+        "none"
+      ]
+    }
+  },
+  "$id": "https://dexmate.ai/schema/resolved-config-v0.json",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": false,
+  "properties": {
+    "capability_vocabulary_version": {
+      "minimum": 1,
+      "type": "integer"
+    },
+    "components": {
+      "additionalProperties": {
+        "$ref": "#/$defs/component"
+      },
+      "type": "object"
+    },
+    "content_hash": {
+      "pattern": "^[0-9a-f]{64}$",
+      "type": "string"
+    },
+    "intent_profiles": {
+      "additionalProperties": {
+        "items": false,
+        "minItems": 2,
+        "prefixItems": [
+          {
+            "type": "string"
+          },
+          {
+            "type": "string"
+          }
+        ],
+        "type": "array"
+      },
+      "type": "object"
+    },
+    "joint_groups": {
+      "additionalProperties": {
+        "items": {
+          "minLength": 1,
+          "type": "string"
+        },
+        "minItems": 1,
+        "type": "array"
+      },
+      "type": "object"
+    },
+    "joint_metadata": {
+      "additionalProperties": {
+        "items": {
+          "$ref": "#/$defs/resolved_joint"
+        },
+        "type": "array"
+      },
+      "type": "object"
+    },
+    "profile_name": {
+      "minLength": 1,
+      "type": "string"
+    },
+    "provenance": {
+      "additionalProperties": {
+        "type": "string"
+      },
+      "type": "object"
+    },
+    "querables": {
+      "additionalProperties": {
+        "type": "string"
+      },
+      "type": "object"
+    },
+    "resolution_stage": {
+      "enum": [
+        "static",
+        "operational"
+      ]
+    },
+    "resolved_config_version": {
+      "const": 0
+    },
+    "robot": {
+      "$ref": "#/$defs/robot"
+    },
+    "runtime": {
+      "additionalProperties": false,
+      "properties": {
+        "default_subscription_policy": {
+          "minLength": 1,
+          "type": "string"
+        },
+        "readiness": {
+          "enum": [
+            "required_components"
+          ]
+        },
+        "state_idle_timeout_ms": {
+          "minimum": 0,
+          "type": "integer"
+        }
+      },
+      "required": [
+        "readiness",
+        "default_subscription_policy",
+        "state_idle_timeout_ms"
+      ],
+      "type": "object"
+    },
+    "safety": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "estop_failure_action": {
+          "$ref": "#/$defs/safety_action"
+        },
+        "heartbeat_failure_action": {
+          "$ref": "#/$defs/safety_action"
+        },
+        "estop_unreadable_action": {
+          "$ref": "#/$defs/safety_action"
+        }
+      }
+    },
+    "schema_version": {
+      "const": 1
+    },
+    "sensors": {
+      "additionalProperties": {
+        "$ref": "#/$defs/component"
+      },
+      "type": "object"
+    }
+  },
+  "required": [
+    "resolved_config_version",
+    "capability_vocabulary_version",
+    "resolution_stage",
+    "profile_name",
+    "schema_version",
+    "content_hash",
+    "robot",
+    "runtime",
+    "components",
+    "sensors",
+    "joint_groups",
+    "joint_metadata",
+    "safety",
+    "querables",
+    "intent_profiles",
+    "provenance"
+  ],
+  "title": "Dexbot ResolvedRobotConfig v0",
+  "type": "object"
+}

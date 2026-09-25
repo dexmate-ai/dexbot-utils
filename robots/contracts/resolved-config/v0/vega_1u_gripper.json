@@ -1,0 +1,1269 @@
+{
+  "resolved_config_version": 0,
+  "capability_vocabulary_version": 1,
+  "resolution_stage": "static",
+  "profile_name": "vega_1u_gripper",
+  "schema_version": 1,
+  "content_hash": "ac0a195d35238ddb1a022ca7b25f75e17609444ddb3fa856c244039e5370e8ed",
+  "robot": {
+    "model": "vega_1u",
+    "namespace": null,
+    "urdf": "package://dexmate_urdf/robots/humanoid/vega_1u/vega_1u_gripper.urdf",
+    "profile_version": "0.1.0",
+    "asset_version": "legacy-dexmate-urdf"
+  },
+  "runtime": {
+    "readiness": "required_components",
+    "default_subscription_policy": "auto",
+    "state_idle_timeout_ms": 5000
+  },
+  "components": {
+    "estop": {
+      "driver": "standard.estop",
+      "enabled": true,
+      "required": true,
+      "local": false,
+      "roles": [
+        "estop"
+      ],
+      "capabilities": [
+        {
+          "id": "emergency_stop",
+          "required": true
+        }
+      ],
+      "dependencies": [],
+      "joints": null,
+      "endpoints": {
+        "estop_query_name": {
+          "kind": "service",
+          "value": "system/estop"
+        },
+        "state_sub_topic": {
+          "kind": "subscriber_topic",
+          "value": "state/estop"
+        }
+      },
+      "safety": {
+        "estop_query_name": "system/estop",
+        "monitoring": true
+      },
+      "metadata": {}
+    },
+    "head": {
+      "driver": "standard.managed_joint",
+      "enabled": true,
+      "required": true,
+      "local": false,
+      "roles": [
+        "head"
+      ],
+      "capabilities": [
+        {
+          "id": "joint_state",
+          "required": true
+        },
+        {
+          "id": "joint_position_command",
+          "required": true
+        },
+        {
+          "id": "managed_joint_motion",
+          "required": true
+        },
+        {
+          "id": "trajectory_execution",
+          "required": true
+        },
+        {
+          "id": "mode_control",
+          "required": true
+        },
+        {
+          "id": "temperature",
+          "required": true
+        }
+      ],
+      "dependencies": [],
+      "joints": {
+        "names": [
+          "head_j1",
+          "head_j2",
+          "head_j3"
+        ],
+        "source": null,
+        "group": null
+      },
+      "endpoints": {
+        "control_pub_topic": {
+          "kind": "publisher_topic",
+          "value": "control/head"
+        },
+        "motion_status": {
+          "kind": "subscriber_topic",
+          "value": "motion/status/head"
+        },
+        "motion_target": {
+          "kind": "publisher_topic",
+          "value": "motion/target/head"
+        },
+        "motion_trajectory": {
+          "kind": "publisher_topic",
+          "value": "motion/trajectory/head"
+        },
+        "set_mode_query": {
+          "kind": "service",
+          "value": "mode/head"
+        },
+        "state_sub_topic": {
+          "kind": "subscriber_topic",
+          "value": "state/head"
+        },
+        "temperature_sub_topic": {
+          "kind": "subscriber_topic",
+          "value": "state/head/temperature"
+        }
+      },
+      "safety": {},
+      "metadata": {
+        "pose_pool": {
+          "home": {
+            "frame": "torso_horizontal",
+            "joint_pos": [
+              0.0,
+              0.0,
+              0.0
+            ]
+          },
+          "tucked": {
+            "frame": "joint",
+            "joint_pos": [
+              0.0,
+              0.0,
+              -1.37
+            ]
+          }
+        },
+        "pv_mode": true
+      }
+    },
+    "heartbeat": {
+      "driver": "standard.heartbeat",
+      "enabled": true,
+      "required": true,
+      "local": false,
+      "roles": [
+        "heartbeat"
+      ],
+      "capabilities": [
+        {
+          "id": "heartbeat",
+          "required": true
+        }
+      ],
+      "dependencies": [],
+      "joints": null,
+      "endpoints": {
+        "heartbeat_topic": {
+          "kind": "topic",
+          "value": "heartbeat"
+        }
+      },
+      "safety": {
+        "heartbeat_topic": "heartbeat",
+        "timeout_seconds": 1.0
+      },
+      "metadata": {}
+    },
+    "left_arm": {
+      "driver": "standard.managed_joint",
+      "enabled": true,
+      "required": true,
+      "local": false,
+      "roles": [
+        "left_arm",
+        "arm",
+        "left"
+      ],
+      "capabilities": [
+        {
+          "id": "joint_state",
+          "required": true
+        },
+        {
+          "id": "joint_position_command",
+          "required": true
+        },
+        {
+          "id": "managed_joint_motion",
+          "required": true
+        },
+        {
+          "id": "trajectory_execution",
+          "required": true
+        },
+        {
+          "id": "mode_control",
+          "required": true
+        },
+        {
+          "id": "temperature",
+          "required": true
+        },
+        {
+          "id": "force_torque",
+          "required": true
+        }
+      ],
+      "dependencies": [],
+      "joints": {
+        "names": [
+          "L_arm_j1",
+          "L_arm_j2",
+          "L_arm_j3",
+          "L_arm_j4",
+          "L_arm_j5",
+          "L_arm_j6",
+          "L_arm_j7"
+        ],
+        "source": null,
+        "group": null
+      },
+      "endpoints": {
+        "brake_query": {
+          "kind": "service",
+          "value": "system/arm_brake/left"
+        },
+        "control_pub_topic": {
+          "kind": "publisher_topic",
+          "value": "control/arm/left"
+        },
+        "ee_baud_rate_query": {
+          "kind": "service",
+          "value": "system/ee_baud_rate/left"
+        },
+        "ee_pass_through_pub_topic": {
+          "kind": "publisher_topic",
+          "value": "control/ee_pass_through/left"
+        },
+        "ee_pass_through_state_sub_topic": {
+          "kind": "subscriber_topic",
+          "value": "state/ee_pass_through/left"
+        },
+        "force_torque_sensor_query": {
+          "kind": "service",
+          "value": "mode/force_torque_sensor/left"
+        },
+        "motion_status": {
+          "kind": "subscriber_topic",
+          "value": "motion/status/arm/left"
+        },
+        "motion_target": {
+          "kind": "publisher_topic",
+          "value": "motion/target/arm/left"
+        },
+        "motion_trajectory": {
+          "kind": "publisher_topic",
+          "value": "motion/trajectory/arm/left"
+        },
+        "pid_query": {
+          "kind": "service",
+          "value": "system/arm_pid/left"
+        },
+        "set_mode_query": {
+          "kind": "service",
+          "value": "mode/arm/left"
+        },
+        "state_sub_topic": {
+          "kind": "subscriber_topic",
+          "value": "state/arm/left"
+        },
+        "temperature_sub_topic": {
+          "kind": "subscriber_topic",
+          "value": "state/arm/left/temperature"
+        },
+        "wrench_sub_topic": {
+          "kind": "subscriber_topic",
+          "value": "state/wrench/left"
+        },
+        "wrist_button_sub_topic": {
+          "kind": "subscriber_topic",
+          "value": "state/wrist_button/left"
+        }
+      },
+      "safety": {},
+      "metadata": {
+        "default_control_hz": 100,
+        "enable_ee_pass_through": true,
+        "pose_pool": {
+          "L_shape": {
+            "frame": "torso_horizontal",
+            "joint_pos": [
+              0.064,
+              0.3,
+              0.0,
+              -1.556,
+              1.271,
+              0.0,
+              0.0
+            ]
+          },
+          "folded": {
+            "frame": "joint",
+            "joint_pos": [
+              1.57079,
+              0.0,
+              0,
+              -3.07,
+              0,
+              0,
+              -0.69813
+            ]
+          },
+          "folded_closed_hand": {
+            "frame": "joint",
+            "joint_pos": [
+              1.57079,
+              0.0,
+              0,
+              -3.07,
+              0,
+              0,
+              -0.9
+            ]
+          },
+          "lift_up": {
+            "frame": "torso_horizontal",
+            "joint_pos": [
+              0.064,
+              0.3,
+              0.0,
+              -2.756,
+              1.271,
+              0.0,
+              0.0
+            ]
+          },
+          "zero": {
+            "frame": "torso_upright",
+            "joint_pos": [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ]
+          }
+        },
+        "pv_mode": false,
+        "side": "left"
+      }
+    },
+    "left_hand": {
+      "driver": "standard.dex_gripper",
+      "enabled": true,
+      "required": true,
+      "local": false,
+      "roles": [
+        "left_hand",
+        "hand",
+        "left"
+      ],
+      "capabilities": [
+        {
+          "id": "joint_state",
+          "required": true
+        },
+        {
+          "id": "joint_position_command",
+          "required": true
+        },
+        {
+          "id": "gripper",
+          "required": true
+        },
+        {
+          "id": "mode_control",
+          "required": true
+        }
+      ],
+      "dependencies": [],
+      "joints": {
+        "names": [
+          "L_gripper_j1"
+        ],
+        "source": null,
+        "group": null
+      },
+      "endpoints": {
+        "control_pub_topic": {
+          "kind": "publisher_topic",
+          "value": "control/gripper/left"
+        },
+        "set_mode_query": {
+          "kind": "service",
+          "value": "mode/gripper/left"
+        },
+        "state_sub_topic": {
+          "kind": "subscriber_topic",
+          "value": "state/gripper/left"
+        }
+      },
+      "safety": {},
+      "metadata": {
+        "grasp_torque": 0.2,
+        "pose_pool": {
+          "close": {
+            "frame": "joint",
+            "joint_pos": [
+              0.0
+            ]
+          },
+          "open": {
+            "frame": "joint",
+            "joint_pos": [
+              0.96
+            ]
+          }
+        },
+        "pv_mode": false,
+        "side": "left"
+      }
+    },
+    "right_arm": {
+      "driver": "standard.managed_joint",
+      "enabled": true,
+      "required": true,
+      "local": false,
+      "roles": [
+        "right_arm",
+        "arm",
+        "right"
+      ],
+      "capabilities": [
+        {
+          "id": "joint_state",
+          "required": true
+        },
+        {
+          "id": "joint_position_command",
+          "required": true
+        },
+        {
+          "id": "managed_joint_motion",
+          "required": true
+        },
+        {
+          "id": "trajectory_execution",
+          "required": true
+        },
+        {
+          "id": "mode_control",
+          "required": true
+        },
+        {
+          "id": "temperature",
+          "required": true
+        },
+        {
+          "id": "force_torque",
+          "required": true
+        }
+      ],
+      "dependencies": [],
+      "joints": {
+        "names": [
+          "R_arm_j1",
+          "R_arm_j2",
+          "R_arm_j3",
+          "R_arm_j4",
+          "R_arm_j5",
+          "R_arm_j6",
+          "R_arm_j7"
+        ],
+        "source": null,
+        "group": null
+      },
+      "endpoints": {
+        "brake_query": {
+          "kind": "service",
+          "value": "system/arm_brake/right"
+        },
+        "control_pub_topic": {
+          "kind": "publisher_topic",
+          "value": "control/arm/right"
+        },
+        "ee_baud_rate_query": {
+          "kind": "service",
+          "value": "system/ee_baud_rate/right"
+        },
+        "ee_pass_through_pub_topic": {
+          "kind": "publisher_topic",
+          "value": "control/ee_pass_through/right"
+        },
+        "ee_pass_through_state_sub_topic": {
+          "kind": "subscriber_topic",
+          "value": "state/ee_pass_through/right"
+        },
+        "force_torque_sensor_query": {
+          "kind": "service",
+          "value": "mode/force_torque_sensor/right"
+        },
+        "motion_status": {
+          "kind": "subscriber_topic",
+          "value": "motion/status/arm/right"
+        },
+        "motion_target": {
+          "kind": "publisher_topic",
+          "value": "motion/target/arm/right"
+        },
+        "motion_trajectory": {
+          "kind": "publisher_topic",
+          "value": "motion/trajectory/arm/right"
+        },
+        "pid_query": {
+          "kind": "service",
+          "value": "system/arm_pid/right"
+        },
+        "set_mode_query": {
+          "kind": "service",
+          "value": "mode/arm/right"
+        },
+        "state_sub_topic": {
+          "kind": "subscriber_topic",
+          "value": "state/arm/right"
+        },
+        "temperature_sub_topic": {
+          "kind": "subscriber_topic",
+          "value": "state/arm/right/temperature"
+        },
+        "wrench_sub_topic": {
+          "kind": "subscriber_topic",
+          "value": "state/wrench/right"
+        },
+        "wrist_button_sub_topic": {
+          "kind": "subscriber_topic",
+          "value": "state/wrist_button/right"
+        }
+      },
+      "safety": {},
+      "metadata": {
+        "default_control_hz": 100,
+        "enable_ee_pass_through": true,
+        "pose_pool": {
+          "L_shape": {
+            "frame": "torso_horizontal",
+            "joint_pos": [
+              -0.064,
+              -0.3,
+              -0.0,
+              -1.556,
+              -1.271,
+              -0.0,
+              -0.0
+            ]
+          },
+          "folded": {
+            "frame": "joint",
+            "joint_pos": [
+              -1.57079,
+              -0.0,
+              0,
+              -3.07,
+              0,
+              0,
+              0.69813
+            ]
+          },
+          "folded_closed_hand": {
+            "frame": "joint",
+            "joint_pos": [
+              -1.57079,
+              -0.0,
+              0,
+              -3.07,
+              0,
+              0,
+              0.9
+            ]
+          },
+          "lift_up": {
+            "frame": "torso_horizontal",
+            "joint_pos": [
+              -0.064,
+              -0.3,
+              -0.0,
+              -2.756,
+              -1.271,
+              -0.0,
+              -0.0
+            ]
+          },
+          "zero": {
+            "frame": "torso_upright",
+            "joint_pos": [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ]
+          }
+        },
+        "pv_mode": false,
+        "side": "right"
+      }
+    },
+    "right_hand": {
+      "driver": "standard.dex_gripper",
+      "enabled": true,
+      "required": true,
+      "local": false,
+      "roles": [
+        "right_hand",
+        "hand",
+        "right"
+      ],
+      "capabilities": [
+        {
+          "id": "joint_state",
+          "required": true
+        },
+        {
+          "id": "joint_position_command",
+          "required": true
+        },
+        {
+          "id": "gripper",
+          "required": true
+        },
+        {
+          "id": "mode_control",
+          "required": true
+        }
+      ],
+      "dependencies": [],
+      "joints": {
+        "names": [
+          "R_gripper_j1"
+        ],
+        "source": null,
+        "group": null
+      },
+      "endpoints": {
+        "control_pub_topic": {
+          "kind": "publisher_topic",
+          "value": "control/gripper/right"
+        },
+        "set_mode_query": {
+          "kind": "service",
+          "value": "mode/gripper/right"
+        },
+        "state_sub_topic": {
+          "kind": "subscriber_topic",
+          "value": "state/gripper/right"
+        }
+      },
+      "safety": {},
+      "metadata": {
+        "grasp_torque": 0.2,
+        "pose_pool": {
+          "close": {
+            "frame": "joint",
+            "joint_pos": [
+              0.0
+            ]
+          },
+          "open": {
+            "frame": "joint",
+            "joint_pos": [
+              0.96
+            ]
+          }
+        },
+        "pv_mode": false,
+        "side": "right"
+      }
+    }
+  },
+  "sensors": {
+    "head_camera": {
+      "driver": "standard.zed_camera",
+      "enabled": false,
+      "required": false,
+      "local": false,
+      "roles": [
+        "head_camera"
+      ],
+      "capabilities": [
+        {
+          "id": "camera_stream",
+          "required": true
+        }
+      ],
+      "dependencies": [],
+      "joints": null,
+      "endpoints": {
+        "depth_topic": {
+          "kind": "topic",
+          "value": "sensors/head_camera/depth"
+        },
+        "left_rgb_rtc_channel": {
+          "kind": "channel",
+          "value": "sensors/head_camera/left_rgb_rtc"
+        },
+        "left_rgb_topic": {
+          "kind": "topic",
+          "value": "sensors/head_camera/left_rgb"
+        },
+        "right_rgb_rtc_channel": {
+          "kind": "channel",
+          "value": "sensors/head_camera/right_rgb_rtc"
+        },
+        "right_rgb_topic": {
+          "kind": "topic",
+          "value": "sensors/head_camera/right_rgb"
+        }
+      },
+      "safety": {},
+      "metadata": {
+        "enable_depth": true,
+        "enable_rgb": true,
+        "name": "head_camera"
+      }
+    },
+    "left_wrist_camera": {
+      "driver": "standard.zed_camera",
+      "enabled": false,
+      "required": false,
+      "local": false,
+      "roles": [
+        "left_wrist_camera",
+        "wrist_camera",
+        "left"
+      ],
+      "capabilities": [
+        {
+          "id": "camera_stream",
+          "required": true
+        }
+      ],
+      "dependencies": [],
+      "joints": null,
+      "endpoints": {
+        "rgb_rtc_channel": {
+          "kind": "channel",
+          "value": "sensors/wrist_camera/rgb_rtc"
+        },
+        "rgb_topic": {
+          "kind": "topic",
+          "value": "sensors/left_wrist_camera/rgb"
+        }
+      },
+      "safety": {},
+      "metadata": {
+        "name": "wrist_camera",
+        "side": "left"
+      }
+    },
+    "right_wrist_camera": {
+      "driver": "standard.zed_camera",
+      "enabled": false,
+      "required": false,
+      "local": false,
+      "roles": [
+        "right_wrist_camera",
+        "wrist_camera",
+        "right"
+      ],
+      "capabilities": [
+        {
+          "id": "camera_stream",
+          "required": true
+        }
+      ],
+      "dependencies": [],
+      "joints": null,
+      "endpoints": {
+        "rgb_rtc_channel": {
+          "kind": "channel",
+          "value": "sensors/wrist_camera/rgb_rtc"
+        },
+        "rgb_topic": {
+          "kind": "topic",
+          "value": "sensors/right_wrist_camera/rgb"
+        }
+      },
+      "safety": {},
+      "metadata": {
+        "name": "wrist_camera",
+        "side": "right"
+      }
+    }
+  },
+  "joint_groups": {},
+  "joint_metadata": {
+    "head": [
+      {
+        "name": "head_j1",
+        "joint_type": "revolute",
+        "lower": -1.483,
+        "upper": 1.483,
+        "effort": 6.0,
+        "velocity": 3.2
+      },
+      {
+        "name": "head_j2",
+        "joint_type": "revolute",
+        "lower": -2.792,
+        "upper": 2.792,
+        "effort": 2.5,
+        "velocity": 3.2
+      },
+      {
+        "name": "head_j3",
+        "joint_type": "revolute",
+        "lower": -1.378,
+        "upper": 1.483,
+        "effort": 6.0,
+        "velocity": 3.2
+      }
+    ],
+    "left_arm": [
+      {
+        "name": "L_arm_j1",
+        "joint_type": "revolute",
+        "lower": -3.071,
+        "upper": 3.071,
+        "effort": 150.0,
+        "velocity": 2.4
+      },
+      {
+        "name": "L_arm_j2",
+        "joint_type": "revolute",
+        "lower": -0.453,
+        "upper": 1.553,
+        "effort": 150.0,
+        "velocity": 2.4
+      },
+      {
+        "name": "L_arm_j3",
+        "joint_type": "revolute",
+        "lower": -3.071,
+        "upper": 3.071,
+        "effort": 80.0,
+        "velocity": 2.7
+      },
+      {
+        "name": "L_arm_j4",
+        "joint_type": "revolute",
+        "lower": -3.071,
+        "upper": 0.244,
+        "effort": 80.0,
+        "velocity": 2.7
+      },
+      {
+        "name": "L_arm_j5",
+        "joint_type": "revolute",
+        "lower": -3.071,
+        "upper": 3.071,
+        "effort": 25.0,
+        "velocity": 2.7
+      },
+      {
+        "name": "L_arm_j6",
+        "joint_type": "revolute",
+        "lower": -1.396,
+        "upper": 1.396,
+        "effort": 25.0,
+        "velocity": 2.7
+      },
+      {
+        "name": "L_arm_j7",
+        "joint_type": "revolute",
+        "lower": -1.378,
+        "upper": 1.117,
+        "effort": 25.0,
+        "velocity": 2.7
+      }
+    ],
+    "left_hand": [
+      {
+        "name": "L_gripper_j1",
+        "joint_type": "revolute",
+        "lower": 0.0,
+        "upper": 0.96,
+        "effort": 0.0,
+        "velocity": 0.0
+      }
+    ],
+    "right_arm": [
+      {
+        "name": "R_arm_j1",
+        "joint_type": "revolute",
+        "lower": -3.071,
+        "upper": 3.071,
+        "effort": 150.0,
+        "velocity": 2.4
+      },
+      {
+        "name": "R_arm_j2",
+        "joint_type": "revolute",
+        "lower": -1.553,
+        "upper": 0.453,
+        "effort": 150.0,
+        "velocity": 2.4
+      },
+      {
+        "name": "R_arm_j3",
+        "joint_type": "revolute",
+        "lower": -3.071,
+        "upper": 3.071,
+        "effort": 80.0,
+        "velocity": 2.7
+      },
+      {
+        "name": "R_arm_j4",
+        "joint_type": "revolute",
+        "lower": -3.071,
+        "upper": 0.244,
+        "effort": 80.0,
+        "velocity": 2.7
+      },
+      {
+        "name": "R_arm_j5",
+        "joint_type": "revolute",
+        "lower": -3.071,
+        "upper": 3.071,
+        "effort": 25.0,
+        "velocity": 2.7
+      },
+      {
+        "name": "R_arm_j6",
+        "joint_type": "revolute",
+        "lower": -1.396,
+        "upper": 1.396,
+        "effort": 25.0,
+        "velocity": 2.7
+      },
+      {
+        "name": "R_arm_j7",
+        "joint_type": "revolute",
+        "lower": -1.117,
+        "upper": 1.378,
+        "effort": 25.0,
+        "velocity": 2.7
+      }
+    ],
+    "right_hand": [
+      {
+        "name": "R_gripper_j1",
+        "joint_type": "revolute",
+        "lower": 0.0,
+        "upper": 0.96,
+        "effort": 0.0,
+        "velocity": 0.0
+      }
+    ]
+  },
+  "safety": {
+    "heartbeat_failure_action": "request_process_termination"
+  },
+  "querables": {
+    "chassis_led": "system/led",
+    "clear_error": "system/clear_error",
+    "hand_info": "info/hand_type",
+    "reboot": "system/reboot",
+    "soc_ntp": "time/soc",
+    "status_info": "info/status",
+    "version_info": "info/versions"
+  },
+  "intent_profiles": {
+    "camera_stream": [
+      "large_live_stream",
+      "latest"
+    ],
+    "heartbeat_liveliness": [
+      "heartbeat",
+      "latest"
+    ],
+    "high_rate_joint_command": [
+      "high_rate_joint_command",
+      "latest"
+    ],
+    "joint_state": [
+      "joint_state",
+      "latest"
+    ],
+    "large_live_stream": [
+      "large_live_stream",
+      "latest"
+    ],
+    "logs_diagnostics": [
+      "diagnostics",
+      "ring"
+    ],
+    "mode_command": [
+      "mode_command",
+      "blocking"
+    ],
+    "safety_command": [
+      "safety_command",
+      "blocking"
+    ]
+  },
+  "provenance": {
+    "components.estop.capabilities": "extends:common/vega_upper_body.yaml",
+    "components.estop.driver": "extends:common/vega_upper_body.yaml",
+    "components.estop.enabled": "extends:common/vega_upper_body.yaml",
+    "components.estop.endpoints.estop_query_name.kind": "extends:common/vega_upper_body.yaml",
+    "components.estop.endpoints.estop_query_name.value": "extends:common/vega_upper_body.yaml",
+    "components.estop.endpoints.state_sub_topic.kind": "extends:common/vega_upper_body.yaml",
+    "components.estop.endpoints.state_sub_topic.value": "extends:common/vega_upper_body.yaml",
+    "components.estop.required": "extends:common/vega_upper_body.yaml",
+    "components.estop.roles": "extends:common/vega_upper_body.yaml",
+    "components.estop.safety.estop_query_name": "extends:common/vega_upper_body.yaml",
+    "components.estop.safety.monitoring": "extends:common/vega_upper_body.yaml",
+    "components.head.capabilities": "extends:common/vega_upper_body.yaml",
+    "components.head.driver": "extends:common/vega_upper_body.yaml",
+    "components.head.enabled": "extends:common/vega_upper_body.yaml",
+    "components.head.endpoints.control_pub_topic.kind": "extends:common/vega_upper_body.yaml",
+    "components.head.endpoints.control_pub_topic.value": "extends:common/vega_upper_body.yaml",
+    "components.head.endpoints.motion_status.kind": "extends:common/vega_upper_body.yaml",
+    "components.head.endpoints.motion_status.value": "extends:common/vega_upper_body.yaml",
+    "components.head.endpoints.motion_target.kind": "extends:common/vega_upper_body.yaml",
+    "components.head.endpoints.motion_target.value": "extends:common/vega_upper_body.yaml",
+    "components.head.endpoints.motion_trajectory.kind": "extends:common/vega_upper_body.yaml",
+    "components.head.endpoints.motion_trajectory.value": "extends:common/vega_upper_body.yaml",
+    "components.head.endpoints.set_mode_query.kind": "extends:common/vega_upper_body.yaml",
+    "components.head.endpoints.set_mode_query.value": "extends:common/vega_upper_body.yaml",
+    "components.head.endpoints.state_sub_topic.kind": "extends:common/vega_upper_body.yaml",
+    "components.head.endpoints.state_sub_topic.value": "extends:common/vega_upper_body.yaml",
+    "components.head.endpoints.temperature_sub_topic.kind": "extends:common/vega_upper_body.yaml",
+    "components.head.endpoints.temperature_sub_topic.value": "extends:common/vega_upper_body.yaml",
+    "components.head.joints.names": "extends:common/vega_upper_body.yaml",
+    "components.head.metadata.pose_pool.home.frame": "extends:common/vega_upper_body.yaml",
+    "components.head.metadata.pose_pool.home.joint_pos": "extends:common/vega_upper_body.yaml",
+    "components.head.metadata.pose_pool.tucked.frame": "extends:common/vega_upper_body.yaml",
+    "components.head.metadata.pose_pool.tucked.joint_pos": "extends:common/vega_upper_body.yaml",
+    "components.head.metadata.pv_mode": "extends:common/vega_upper_body.yaml",
+    "components.head.required": "extends:common/vega_upper_body.yaml",
+    "components.head.roles": "extends:common/vega_upper_body.yaml",
+    "components.heartbeat.capabilities": "extends:common/vega_upper_body.yaml",
+    "components.heartbeat.driver": "extends:common/vega_upper_body.yaml",
+    "components.heartbeat.enabled": "extends:common/vega_upper_body.yaml",
+    "components.heartbeat.endpoints.heartbeat_topic.kind": "extends:common/vega_upper_body.yaml",
+    "components.heartbeat.endpoints.heartbeat_topic.value": "extends:common/vega_upper_body.yaml",
+    "components.heartbeat.required": "extends:common/vega_upper_body.yaml",
+    "components.heartbeat.roles": "extends:common/vega_upper_body.yaml",
+    "components.heartbeat.safety.heartbeat_topic": "extends:common/vega_upper_body.yaml",
+    "components.heartbeat.safety.timeout_seconds": "extends:common/vega_upper_body.yaml",
+    "components.left_arm.capabilities": "extends:common/vega_upper_body.yaml",
+    "components.left_arm.driver": "extends:common/vega_upper_body.yaml",
+    "components.left_arm.enabled": "extends:common/vega_upper_body.yaml",
+    "components.left_arm.endpoints.brake_query.kind": "extends:common/vega_upper_body.yaml",
+    "components.left_arm.endpoints.brake_query.value": "extends:common/vega_upper_body.yaml",
+    "components.left_arm.endpoints.control_pub_topic.kind": "extends:common/vega_upper_body.yaml",
+    "components.left_arm.endpoints.control_pub_topic.value": "extends:common/vega_upper_body.yaml",
+    "components.left_arm.endpoints.ee_baud_rate_query.kind": "extends:common/vega_upper_body.yaml",
+    "components.left_arm.endpoints.ee_baud_rate_query.value": "extends:common/vega_upper_body.yaml",
+    "components.left_arm.endpoints.ee_pass_through_pub_topic.kind": "extends:common/vega_upper_body.yaml",
+    "components.left_arm.endpoints.ee_pass_through_pub_topic.value": "extends:common/vega_upper_body.yaml",
+    "components.left_arm.endpoints.ee_pass_through_state_sub_topic.kind": "extends:common/vega_upper_body.yaml",
+    "components.left_arm.endpoints.ee_pass_through_state_sub_topic.value": "extends:common/vega_upper_body.yaml",
+    "components.left_arm.endpoints.force_torque_sensor_query.kind": "extends:common/vega_upper_body.yaml",
+    "components.left_arm.endpoints.force_torque_sensor_query.value": "extends:common/vega_upper_body.yaml",
+    "components.left_arm.endpoints.motion_status.kind": "extends:common/vega_upper_body.yaml",
+    "components.left_arm.endpoints.motion_status.value": "extends:common/vega_upper_body.yaml",
+    "components.left_arm.endpoints.motion_target.kind": "extends:common/vega_upper_body.yaml",
+    "components.left_arm.endpoints.motion_target.value": "extends:common/vega_upper_body.yaml",
+    "components.left_arm.endpoints.motion_trajectory.kind": "extends:common/vega_upper_body.yaml",
+    "components.left_arm.endpoints.motion_trajectory.value": "extends:common/vega_upper_body.yaml",
+    "components.left_arm.endpoints.pid_query.kind": "extends:common/vega_upper_body.yaml",
+    "components.left_arm.endpoints.pid_query.value": "extends:common/vega_upper_body.yaml",
+    "components.left_arm.endpoints.set_mode_query.kind": "extends:common/vega_upper_body.yaml",
+    "components.left_arm.endpoints.set_mode_query.value": "extends:common/vega_upper_body.yaml",
+    "components.left_arm.endpoints.state_sub_topic.kind": "extends:common/vega_upper_body.yaml",
+    "components.left_arm.endpoints.state_sub_topic.value": "extends:common/vega_upper_body.yaml",
+    "components.left_arm.endpoints.temperature_sub_topic.kind": "extends:common/vega_upper_body.yaml",
+    "components.left_arm.endpoints.temperature_sub_topic.value": "extends:common/vega_upper_body.yaml",
+    "components.left_arm.endpoints.wrench_sub_topic.kind": "extends:common/vega_upper_body.yaml",
+    "components.left_arm.endpoints.wrench_sub_topic.value": "extends:common/vega_upper_body.yaml",
+    "components.left_arm.endpoints.wrist_button_sub_topic.kind": "extends:common/vega_upper_body.yaml",
+    "components.left_arm.endpoints.wrist_button_sub_topic.value": "extends:common/vega_upper_body.yaml",
+    "components.left_arm.joints.names": "extends:common/vega_upper_body.yaml",
+    "components.left_arm.metadata.default_control_hz": "extends:common/vega_upper_body.yaml",
+    "components.left_arm.metadata.enable_ee_pass_through": "extends:common/vega_upper_body.yaml",
+    "components.left_arm.metadata.pose_pool.L_shape.frame": "extends:common/vega_upper_body.yaml",
+    "components.left_arm.metadata.pose_pool.L_shape.joint_pos": "extends:common/vega_upper_body.yaml",
+    "components.left_arm.metadata.pose_pool.folded.frame": "extends:common/vega_upper_body.yaml",
+    "components.left_arm.metadata.pose_pool.folded.joint_pos": "extends:common/vega_upper_body.yaml",
+    "components.left_arm.metadata.pose_pool.folded_closed_hand.frame": "extends:common/vega_upper_body.yaml",
+    "components.left_arm.metadata.pose_pool.folded_closed_hand.joint_pos": "extends:common/vega_upper_body.yaml",
+    "components.left_arm.metadata.pose_pool.lift_up.frame": "extends:common/vega_upper_body.yaml",
+    "components.left_arm.metadata.pose_pool.lift_up.joint_pos": "extends:common/vega_upper_body.yaml",
+    "components.left_arm.metadata.pose_pool.zero.frame": "extends:common/vega_upper_body.yaml",
+    "components.left_arm.metadata.pose_pool.zero.joint_pos": "extends:common/vega_upper_body.yaml",
+    "components.left_arm.metadata.pv_mode": "extends:common/vega_upper_body.yaml",
+    "components.left_arm.metadata.side": "extends:common/vega_upper_body.yaml",
+    "components.left_arm.required": "extends:common/vega_upper_body.yaml",
+    "components.left_arm.roles": "extends:common/vega_upper_body.yaml",
+    "components.left_hand.capabilities": "extends:common/vega_hands_gripper.yaml",
+    "components.left_hand.driver": "extends:common/vega_hands_gripper.yaml",
+    "components.left_hand.enabled": "extends:common/vega_hands_gripper.yaml",
+    "components.left_hand.endpoints.control_pub_topic.kind": "extends:common/vega_hands_gripper.yaml",
+    "components.left_hand.endpoints.control_pub_topic.value": "extends:common/vega_hands_gripper.yaml",
+    "components.left_hand.endpoints.set_mode_query.kind": "extends:common/vega_hands_gripper.yaml",
+    "components.left_hand.endpoints.set_mode_query.value": "extends:common/vega_hands_gripper.yaml",
+    "components.left_hand.endpoints.state_sub_topic.kind": "extends:common/vega_hands_gripper.yaml",
+    "components.left_hand.endpoints.state_sub_topic.value": "extends:common/vega_hands_gripper.yaml",
+    "components.left_hand.joints.names": "extends:common/vega_hands_gripper.yaml",
+    "components.left_hand.metadata.grasp_torque": "extends:common/vega_hands_gripper.yaml",
+    "components.left_hand.metadata.pose_pool.close.frame": "extends:common/vega_hands_gripper.yaml",
+    "components.left_hand.metadata.pose_pool.close.joint_pos": "extends:common/vega_hands_gripper.yaml",
+    "components.left_hand.metadata.pose_pool.open.frame": "extends:common/vega_hands_gripper.yaml",
+    "components.left_hand.metadata.pose_pool.open.joint_pos": "extends:common/vega_hands_gripper.yaml",
+    "components.left_hand.metadata.pv_mode": "extends:common/vega_hands_gripper.yaml",
+    "components.left_hand.metadata.side": "extends:common/vega_hands_gripper.yaml",
+    "components.left_hand.required": "extends:common/vega_hands_gripper.yaml",
+    "components.left_hand.roles": "extends:common/vega_hands_gripper.yaml",
+    "components.right_arm.capabilities": "extends:common/vega_upper_body.yaml",
+    "components.right_arm.driver": "extends:common/vega_upper_body.yaml",
+    "components.right_arm.enabled": "extends:common/vega_upper_body.yaml",
+    "components.right_arm.endpoints.brake_query.kind": "extends:common/vega_upper_body.yaml",
+    "components.right_arm.endpoints.brake_query.value": "extends:common/vega_upper_body.yaml",
+    "components.right_arm.endpoints.control_pub_topic.kind": "extends:common/vega_upper_body.yaml",
+    "components.right_arm.endpoints.control_pub_topic.value": "extends:common/vega_upper_body.yaml",
+    "components.right_arm.endpoints.ee_baud_rate_query.kind": "extends:common/vega_upper_body.yaml",
+    "components.right_arm.endpoints.ee_baud_rate_query.value": "extends:common/vega_upper_body.yaml",
+    "components.right_arm.endpoints.ee_pass_through_pub_topic.kind": "extends:common/vega_upper_body.yaml",
+    "components.right_arm.endpoints.ee_pass_through_pub_topic.value": "extends:common/vega_upper_body.yaml",
+    "components.right_arm.endpoints.ee_pass_through_state_sub_topic.kind": "extends:common/vega_upper_body.yaml",
+    "components.right_arm.endpoints.ee_pass_through_state_sub_topic.value": "extends:common/vega_upper_body.yaml",
+    "components.right_arm.endpoints.force_torque_sensor_query.kind": "extends:common/vega_upper_body.yaml",
+    "components.right_arm.endpoints.force_torque_sensor_query.value": "extends:common/vega_upper_body.yaml",
+    "components.right_arm.endpoints.motion_status.kind": "extends:common/vega_upper_body.yaml",
+    "components.right_arm.endpoints.motion_status.value": "extends:common/vega_upper_body.yaml",
+    "components.right_arm.endpoints.motion_target.kind": "extends:common/vega_upper_body.yaml",
+    "components.right_arm.endpoints.motion_target.value": "extends:common/vega_upper_body.yaml",
+    "components.right_arm.endpoints.motion_trajectory.kind": "extends:common/vega_upper_body.yaml",
+    "components.right_arm.endpoints.motion_trajectory.value": "extends:common/vega_upper_body.yaml",
+    "components.right_arm.endpoints.pid_query.kind": "extends:common/vega_upper_body.yaml",
+    "components.right_arm.endpoints.pid_query.value": "extends:common/vega_upper_body.yaml",
+    "components.right_arm.endpoints.set_mode_query.kind": "extends:common/vega_upper_body.yaml",
+    "components.right_arm.endpoints.set_mode_query.value": "extends:common/vega_upper_body.yaml",
+    "components.right_arm.endpoints.state_sub_topic.kind": "extends:common/vega_upper_body.yaml",
+    "components.right_arm.endpoints.state_sub_topic.value": "extends:common/vega_upper_body.yaml",
+    "components.right_arm.endpoints.temperature_sub_topic.kind": "extends:common/vega_upper_body.yaml",
+    "components.right_arm.endpoints.temperature_sub_topic.value": "extends:common/vega_upper_body.yaml",
+    "components.right_arm.endpoints.wrench_sub_topic.kind": "extends:common/vega_upper_body.yaml",
+    "components.right_arm.endpoints.wrench_sub_topic.value": "extends:common/vega_upper_body.yaml",
+    "components.right_arm.endpoints.wrist_button_sub_topic.kind": "extends:common/vega_upper_body.yaml",
+    "components.right_arm.endpoints.wrist_button_sub_topic.value": "extends:common/vega_upper_body.yaml",
+    "components.right_arm.joints.names": "extends:common/vega_upper_body.yaml",
+    "components.right_arm.metadata.default_control_hz": "extends:common/vega_upper_body.yaml",
+    "components.right_arm.metadata.enable_ee_pass_through": "extends:common/vega_upper_body.yaml",
+    "components.right_arm.metadata.pose_pool.L_shape.frame": "extends:common/vega_upper_body.yaml",
+    "components.right_arm.metadata.pose_pool.L_shape.joint_pos": "extends:common/vega_upper_body.yaml",
+    "components.right_arm.metadata.pose_pool.folded.frame": "extends:common/vega_upper_body.yaml",
+    "components.right_arm.metadata.pose_pool.folded.joint_pos": "extends:common/vega_upper_body.yaml",
+    "components.right_arm.metadata.pose_pool.folded_closed_hand.frame": "extends:common/vega_upper_body.yaml",
+    "components.right_arm.metadata.pose_pool.folded_closed_hand.joint_pos": "extends:common/vega_upper_body.yaml",
+    "components.right_arm.metadata.pose_pool.lift_up.frame": "extends:common/vega_upper_body.yaml",
+    "components.right_arm.metadata.pose_pool.lift_up.joint_pos": "extends:common/vega_upper_body.yaml",
+    "components.right_arm.metadata.pose_pool.zero.frame": "extends:common/vega_upper_body.yaml",
+    "components.right_arm.metadata.pose_pool.zero.joint_pos": "extends:common/vega_upper_body.yaml",
+    "components.right_arm.metadata.pv_mode": "extends:common/vega_upper_body.yaml",
+    "components.right_arm.metadata.side": "extends:common/vega_upper_body.yaml",
+    "components.right_arm.required": "extends:common/vega_upper_body.yaml",
+    "components.right_arm.roles": "extends:common/vega_upper_body.yaml",
+    "components.right_hand.capabilities": "extends:common/vega_hands_gripper.yaml",
+    "components.right_hand.driver": "extends:common/vega_hands_gripper.yaml",
+    "components.right_hand.enabled": "extends:common/vega_hands_gripper.yaml",
+    "components.right_hand.endpoints.control_pub_topic.kind": "extends:common/vega_hands_gripper.yaml",
+    "components.right_hand.endpoints.control_pub_topic.value": "extends:common/vega_hands_gripper.yaml",
+    "components.right_hand.endpoints.set_mode_query.kind": "extends:common/vega_hands_gripper.yaml",
+    "components.right_hand.endpoints.set_mode_query.value": "extends:common/vega_hands_gripper.yaml",
+    "components.right_hand.endpoints.state_sub_topic.kind": "extends:common/vega_hands_gripper.yaml",
+    "components.right_hand.endpoints.state_sub_topic.value": "extends:common/vega_hands_gripper.yaml",
+    "components.right_hand.joints.names": "extends:common/vega_hands_gripper.yaml",
+    "components.right_hand.metadata.grasp_torque": "extends:common/vega_hands_gripper.yaml",
+    "components.right_hand.metadata.pose_pool.close.frame": "extends:common/vega_hands_gripper.yaml",
+    "components.right_hand.metadata.pose_pool.close.joint_pos": "extends:common/vega_hands_gripper.yaml",
+    "components.right_hand.metadata.pose_pool.open.frame": "extends:common/vega_hands_gripper.yaml",
+    "components.right_hand.metadata.pose_pool.open.joint_pos": "extends:common/vega_hands_gripper.yaml",
+    "components.right_hand.metadata.pv_mode": "extends:common/vega_hands_gripper.yaml",
+    "components.right_hand.metadata.side": "extends:common/vega_hands_gripper.yaml",
+    "components.right_hand.required": "extends:common/vega_hands_gripper.yaml",
+    "components.right_hand.roles": "extends:common/vega_hands_gripper.yaml",
+    "intent_profiles.camera_stream": "extends:common/vega_upper_body.yaml",
+    "intent_profiles.heartbeat_liveliness": "extends:common/vega_upper_body.yaml",
+    "intent_profiles.high_rate_joint_command": "extends:common/vega_upper_body.yaml",
+    "intent_profiles.joint_state": "extends:common/vega_upper_body.yaml",
+    "intent_profiles.large_live_stream": "extends:common/vega_upper_body.yaml",
+    "intent_profiles.logs_diagnostics": "extends:common/vega_upper_body.yaml",
+    "intent_profiles.mode_command": "extends:common/vega_upper_body.yaml",
+    "intent_profiles.safety_command": "extends:common/vega_upper_body.yaml",
+    "querables.chassis_led": "extends:common/vega_upper_body.yaml",
+    "querables.clear_error": "extends:common/vega_upper_body.yaml",
+    "querables.hand_info": "extends:common/vega_upper_body.yaml",
+    "querables.reboot": "extends:common/vega_upper_body.yaml",
+    "querables.soc_ntp": "extends:common/vega_upper_body.yaml",
+    "querables.status_info": "extends:common/vega_upper_body.yaml",
+    "querables.version_info": "extends:common/vega_upper_body.yaml",
+    "robot.asset_version": "extends:common/vega_upper_body.yaml",
+    "robot.model": "profile:vega_1u_gripper",
+    "robot.namespace": "extends:common/vega_upper_body.yaml",
+    "robot.profile_version": "extends:common/vega_upper_body.yaml",
+    "robot.urdf": "profile:vega_1u_gripper",
+    "runtime.default_subscription_policy": "extends:common/vega_upper_body.yaml",
+    "runtime.readiness": "extends:common/vega_upper_body.yaml",
+    "runtime.state_idle_timeout_ms": "extends:common/vega_upper_body.yaml",
+    "safety.heartbeat_failure_action": "extends:common/vega_upper_body.yaml",
+    "schema_version": "profile:vega_1u_gripper",
+    "sensors.head_camera.capabilities": "extends:common/vega_upper_body.yaml",
+    "sensors.head_camera.driver": "extends:common/vega_upper_body.yaml",
+    "sensors.head_camera.enabled": "extends:common/vega_upper_body.yaml",
+    "sensors.head_camera.endpoints.depth_topic.kind": "extends:common/vega_upper_body.yaml",
+    "sensors.head_camera.endpoints.depth_topic.value": "extends:common/vega_upper_body.yaml",
+    "sensors.head_camera.endpoints.left_rgb_rtc_channel.kind": "extends:common/vega_upper_body.yaml",
+    "sensors.head_camera.endpoints.left_rgb_rtc_channel.value": "extends:common/vega_upper_body.yaml",
+    "sensors.head_camera.endpoints.left_rgb_topic.kind": "extends:common/vega_upper_body.yaml",
+    "sensors.head_camera.endpoints.left_rgb_topic.value": "extends:common/vega_upper_body.yaml",
+    "sensors.head_camera.endpoints.right_rgb_rtc_channel.kind": "extends:common/vega_upper_body.yaml",
+    "sensors.head_camera.endpoints.right_rgb_rtc_channel.value": "extends:common/vega_upper_body.yaml",
+    "sensors.head_camera.endpoints.right_rgb_topic.kind": "extends:common/vega_upper_body.yaml",
+    "sensors.head_camera.endpoints.right_rgb_topic.value": "extends:common/vega_upper_body.yaml",
+    "sensors.head_camera.metadata.enable_depth": "extends:common/vega_upper_body.yaml",
+    "sensors.head_camera.metadata.enable_rgb": "extends:common/vega_upper_body.yaml",
+    "sensors.head_camera.metadata.name": "extends:common/vega_upper_body.yaml",
+    "sensors.head_camera.required": "extends:common/vega_upper_body.yaml",
+    "sensors.head_camera.roles": "extends:common/vega_upper_body.yaml",
+    "sensors.left_wrist_camera.capabilities": "extends:common/vega_upper_body.yaml",
+    "sensors.left_wrist_camera.driver": "extends:common/vega_upper_body.yaml",
+    "sensors.left_wrist_camera.enabled": "extends:common/vega_upper_body.yaml",
+    "sensors.left_wrist_camera.endpoints.rgb_rtc_channel.kind": "extends:common/vega_upper_body.yaml",
+    "sensors.left_wrist_camera.endpoints.rgb_rtc_channel.value": "extends:common/vega_upper_body.yaml",
+    "sensors.left_wrist_camera.endpoints.rgb_topic.kind": "extends:common/vega_upper_body.yaml",
+    "sensors.left_wrist_camera.endpoints.rgb_topic.value": "extends:common/vega_upper_body.yaml",
+    "sensors.left_wrist_camera.metadata.name": "extends:common/vega_upper_body.yaml",
+    "sensors.left_wrist_camera.metadata.side": "extends:common/vega_upper_body.yaml",
+    "sensors.left_wrist_camera.required": "extends:common/vega_upper_body.yaml",
+    "sensors.left_wrist_camera.roles": "extends:common/vega_upper_body.yaml",
+    "sensors.right_wrist_camera.capabilities": "extends:common/vega_upper_body.yaml",
+    "sensors.right_wrist_camera.driver": "extends:common/vega_upper_body.yaml",
+    "sensors.right_wrist_camera.enabled": "extends:common/vega_upper_body.yaml",
+    "sensors.right_wrist_camera.endpoints.rgb_rtc_channel.kind": "extends:common/vega_upper_body.yaml",
+    "sensors.right_wrist_camera.endpoints.rgb_rtc_channel.value": "extends:common/vega_upper_body.yaml",
+    "sensors.right_wrist_camera.endpoints.rgb_topic.kind": "extends:common/vega_upper_body.yaml",
+    "sensors.right_wrist_camera.endpoints.rgb_topic.value": "extends:common/vega_upper_body.yaml",
+    "sensors.right_wrist_camera.metadata.name": "extends:common/vega_upper_body.yaml",
+    "sensors.right_wrist_camera.metadata.side": "extends:common/vega_upper_body.yaml",
+    "sensors.right_wrist_camera.required": "extends:common/vega_upper_body.yaml",
+    "sensors.right_wrist_camera.roles": "extends:common/vega_upper_body.yaml"
+  }
+}

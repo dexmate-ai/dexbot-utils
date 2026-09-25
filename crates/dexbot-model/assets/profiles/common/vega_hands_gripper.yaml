@@ -1,0 +1,76 @@
+# Dexmate D-gripper hands for any Vega variant.
+components:
+  left_hand:
+    driver: standard.dex_gripper
+    enabled: true
+    required: true
+    roles:
+    - left_hand
+    - hand
+    - left
+    capabilities:
+    - joint_state
+    - joint_position_command
+    - gripper
+    - mode_control
+    endpoints:
+      control_pub_topic:
+        kind: publisher_topic
+        value: control/gripper/left
+      set_mode_query:
+        kind: service
+        value: mode/gripper/left
+      state_sub_topic:
+        kind: subscriber_topic
+        value: state/gripper/left
+    joints:
+      names:
+      - L_gripper_j1
+    metadata:
+      grasp_torque: 0.2
+      pose_pool:
+        close:
+          joint_pos: [0.0]
+          frame: joint
+        open:
+          joint_pos: [0.96]
+          frame: joint
+      pv_mode: false
+      side: left
+  right_hand:
+    driver: standard.dex_gripper
+    enabled: true
+    required: true
+    roles:
+    - right_hand
+    - hand
+    - right
+    capabilities:
+    - joint_state
+    - joint_position_command
+    - gripper
+    - mode_control
+    endpoints:
+      control_pub_topic:
+        kind: publisher_topic
+        value: control/gripper/right
+      set_mode_query:
+        kind: service
+        value: mode/gripper/right
+      state_sub_topic:
+        kind: subscriber_topic
+        value: state/gripper/right
+    joints:
+      names:
+      - R_gripper_j1
+    metadata:
+      grasp_torque: 0.2
+      pose_pool:
+        close:
+          joint_pos: [0.0]
+          frame: joint
+        open:
+          joint_pos: [0.96]
+          frame: joint
+      pv_mode: false
+      side: right
