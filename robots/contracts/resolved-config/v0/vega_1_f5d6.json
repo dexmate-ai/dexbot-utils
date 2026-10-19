@@ -4,7 +4,7 @@
   "resolution_stage": "static",
   "profile_name": "vega_1_f5d6",
   "schema_version": 1,
-  "content_hash": "83bdc620c9580ae816d4d6a63ed5dd29854b5c4308eb01172bfdfe5aef6a2f58",
+  "content_hash": "6654d7641eb81b2b27bd6153262398e746b4127c2fc9f726d1c8364969be7c7e",
   "robot": {
     "model": "vega_1",
     "namespace": null,
@@ -993,6 +993,134 @@
     }
   },
   "sensors": {
+    "base_back_camera": {
+      "driver": "standard.usb_camera",
+      "enabled": false,
+      "required": false,
+      "local": false,
+      "roles": [
+        "base_back_camera",
+        "chassis_camera"
+      ],
+      "capabilities": [
+        {
+          "id": "camera_stream",
+          "required": true
+        }
+      ],
+      "dependencies": [],
+      "joints": null,
+      "endpoints": {
+        "rgb_rtc_channel": {
+          "kind": "channel",
+          "value": "sensors/base_back_camera/rgb_rtc"
+        },
+        "rgb_topic": {
+          "kind": "topic",
+          "value": "sensors/base_back_camera/rgb"
+        }
+      },
+      "safety": {},
+      "metadata": {
+        "name": "base_back_camera"
+      }
+    },
+    "base_front_camera": {
+      "driver": "standard.usb_camera",
+      "enabled": false,
+      "required": false,
+      "local": false,
+      "roles": [
+        "base_front_camera",
+        "chassis_camera"
+      ],
+      "capabilities": [
+        {
+          "id": "camera_stream",
+          "required": true
+        }
+      ],
+      "dependencies": [],
+      "joints": null,
+      "endpoints": {
+        "rgb_rtc_channel": {
+          "kind": "channel",
+          "value": "sensors/base_front_camera/rgb_rtc"
+        },
+        "rgb_topic": {
+          "kind": "topic",
+          "value": "sensors/base_front_camera/rgb"
+        }
+      },
+      "safety": {},
+      "metadata": {
+        "name": "base_front_camera"
+      }
+    },
+    "base_left_camera": {
+      "driver": "standard.usb_camera",
+      "enabled": false,
+      "required": false,
+      "local": false,
+      "roles": [
+        "base_left_camera",
+        "chassis_camera"
+      ],
+      "capabilities": [
+        {
+          "id": "camera_stream",
+          "required": true
+        }
+      ],
+      "dependencies": [],
+      "joints": null,
+      "endpoints": {
+        "rgb_rtc_channel": {
+          "kind": "channel",
+          "value": "sensors/base_left_camera/rgb_rtc"
+        },
+        "rgb_topic": {
+          "kind": "topic",
+          "value": "sensors/base_left_camera/rgb"
+        }
+      },
+      "safety": {},
+      "metadata": {
+        "name": "base_left_camera"
+      }
+    },
+    "base_right_camera": {
+      "driver": "standard.usb_camera",
+      "enabled": false,
+      "required": false,
+      "local": false,
+      "roles": [
+        "base_right_camera",
+        "chassis_camera"
+      ],
+      "capabilities": [
+        {
+          "id": "camera_stream",
+          "required": true
+        }
+      ],
+      "dependencies": [],
+      "joints": null,
+      "endpoints": {
+        "rgb_rtc_channel": {
+          "kind": "channel",
+          "value": "sensors/base_right_camera/rgb_rtc"
+        },
+        "rgb_topic": {
+          "kind": "topic",
+          "value": "sensors/base_right_camera/rgb"
+        }
+      },
+      "safety": {},
+      "metadata": {
+        "name": "base_right_camera"
+      }
+    },
     "chassis_imu": {
       "driver": "standard.imu",
       "enabled": false,
@@ -1032,6 +1160,10 @@
         {
           "id": "camera_stream",
           "required": true
+        },
+        {
+          "id": "imu",
+          "required": true
         }
       ],
       "dependencies": [],
@@ -1040,6 +1172,10 @@
         "depth_topic": {
           "kind": "topic",
           "value": "sensors/head_camera/depth"
+        },
+        "imu_topic": {
+          "kind": "topic",
+          "value": "sensors/head_camera/imu"
         },
         "left_rgb_rtc_channel": {
           "kind": "channel",
@@ -1063,33 +1199,6 @@
         "enable_depth": true,
         "enable_rgb": true,
         "name": "head_camera"
-      }
-    },
-    "head_imu": {
-      "driver": "standard.imu",
-      "enabled": false,
-      "required": false,
-      "local": false,
-      "roles": [
-        "head_imu"
-      ],
-      "capabilities": [
-        {
-          "id": "imu",
-          "required": true
-        }
-      ],
-      "dependencies": [],
-      "joints": null,
-      "endpoints": {
-        "topic": {
-          "kind": "topic",
-          "value": "sensors/head_camera/imu"
-        }
-      },
-      "safety": {},
-      "metadata": {
-        "name": "head_imu"
       }
     },
     "left_wrist_camera": {
@@ -1851,6 +1960,46 @@
     "runtime.state_idle_timeout_ms": "extends:common/vega_upper_body.yaml",
     "safety.heartbeat_failure_action": "extends:common/vega_upper_body.yaml",
     "schema_version": "profile:vega_1_f5d6",
+    "sensors.base_back_camera.capabilities": "extends:common/vega_mobile_base.yaml",
+    "sensors.base_back_camera.driver": "extends:common/vega_mobile_base.yaml",
+    "sensors.base_back_camera.enabled": "extends:common/vega_mobile_base.yaml",
+    "sensors.base_back_camera.endpoints.rgb_rtc_channel.kind": "extends:common/vega_mobile_base.yaml",
+    "sensors.base_back_camera.endpoints.rgb_rtc_channel.value": "extends:common/vega_mobile_base.yaml",
+    "sensors.base_back_camera.endpoints.rgb_topic.kind": "extends:common/vega_mobile_base.yaml",
+    "sensors.base_back_camera.endpoints.rgb_topic.value": "extends:common/vega_mobile_base.yaml",
+    "sensors.base_back_camera.metadata.name": "extends:common/vega_mobile_base.yaml",
+    "sensors.base_back_camera.required": "extends:common/vega_mobile_base.yaml",
+    "sensors.base_back_camera.roles": "extends:common/vega_mobile_base.yaml",
+    "sensors.base_front_camera.capabilities": "extends:common/vega_mobile_base.yaml",
+    "sensors.base_front_camera.driver": "extends:common/vega_mobile_base.yaml",
+    "sensors.base_front_camera.enabled": "extends:common/vega_mobile_base.yaml",
+    "sensors.base_front_camera.endpoints.rgb_rtc_channel.kind": "extends:common/vega_mobile_base.yaml",
+    "sensors.base_front_camera.endpoints.rgb_rtc_channel.value": "extends:common/vega_mobile_base.yaml",
+    "sensors.base_front_camera.endpoints.rgb_topic.kind": "extends:common/vega_mobile_base.yaml",
+    "sensors.base_front_camera.endpoints.rgb_topic.value": "extends:common/vega_mobile_base.yaml",
+    "sensors.base_front_camera.metadata.name": "extends:common/vega_mobile_base.yaml",
+    "sensors.base_front_camera.required": "extends:common/vega_mobile_base.yaml",
+    "sensors.base_front_camera.roles": "extends:common/vega_mobile_base.yaml",
+    "sensors.base_left_camera.capabilities": "extends:common/vega_mobile_base.yaml",
+    "sensors.base_left_camera.driver": "extends:common/vega_mobile_base.yaml",
+    "sensors.base_left_camera.enabled": "extends:common/vega_mobile_base.yaml",
+    "sensors.base_left_camera.endpoints.rgb_rtc_channel.kind": "extends:common/vega_mobile_base.yaml",
+    "sensors.base_left_camera.endpoints.rgb_rtc_channel.value": "extends:common/vega_mobile_base.yaml",
+    "sensors.base_left_camera.endpoints.rgb_topic.kind": "extends:common/vega_mobile_base.yaml",
+    "sensors.base_left_camera.endpoints.rgb_topic.value": "extends:common/vega_mobile_base.yaml",
+    "sensors.base_left_camera.metadata.name": "extends:common/vega_mobile_base.yaml",
+    "sensors.base_left_camera.required": "extends:common/vega_mobile_base.yaml",
+    "sensors.base_left_camera.roles": "extends:common/vega_mobile_base.yaml",
+    "sensors.base_right_camera.capabilities": "extends:common/vega_mobile_base.yaml",
+    "sensors.base_right_camera.driver": "extends:common/vega_mobile_base.yaml",
+    "sensors.base_right_camera.enabled": "extends:common/vega_mobile_base.yaml",
+    "sensors.base_right_camera.endpoints.rgb_rtc_channel.kind": "extends:common/vega_mobile_base.yaml",
+    "sensors.base_right_camera.endpoints.rgb_rtc_channel.value": "extends:common/vega_mobile_base.yaml",
+    "sensors.base_right_camera.endpoints.rgb_topic.kind": "extends:common/vega_mobile_base.yaml",
+    "sensors.base_right_camera.endpoints.rgb_topic.value": "extends:common/vega_mobile_base.yaml",
+    "sensors.base_right_camera.metadata.name": "extends:common/vega_mobile_base.yaml",
+    "sensors.base_right_camera.required": "extends:common/vega_mobile_base.yaml",
+    "sensors.base_right_camera.roles": "extends:common/vega_mobile_base.yaml",
     "sensors.chassis_imu.capabilities": "extends:common/vega_1_sensors.yaml",
     "sensors.chassis_imu.driver": "extends:common/vega_1_sensors.yaml",
     "sensors.chassis_imu.enabled": "extends:common/vega_1_sensors.yaml",
@@ -1864,6 +2013,8 @@
     "sensors.head_camera.enabled": "extends:common/vega_upper_body.yaml",
     "sensors.head_camera.endpoints.depth_topic.kind": "extends:common/vega_upper_body.yaml",
     "sensors.head_camera.endpoints.depth_topic.value": "extends:common/vega_upper_body.yaml",
+    "sensors.head_camera.endpoints.imu_topic.kind": "extends:common/vega_upper_body.yaml",
+    "sensors.head_camera.endpoints.imu_topic.value": "extends:common/vega_upper_body.yaml",
     "sensors.head_camera.endpoints.left_rgb_rtc_channel.kind": "extends:common/vega_upper_body.yaml",
     "sensors.head_camera.endpoints.left_rgb_rtc_channel.value": "extends:common/vega_upper_body.yaml",
     "sensors.head_camera.endpoints.left_rgb_topic.kind": "extends:common/vega_upper_body.yaml",
@@ -1877,14 +2028,6 @@
     "sensors.head_camera.metadata.name": "extends:common/vega_upper_body.yaml",
     "sensors.head_camera.required": "extends:common/vega_upper_body.yaml",
     "sensors.head_camera.roles": "extends:common/vega_upper_body.yaml",
-    "sensors.head_imu.capabilities": "extends:common/vega_1_sensors.yaml",
-    "sensors.head_imu.driver": "extends:common/vega_1_sensors.yaml",
-    "sensors.head_imu.enabled": "extends:common/vega_1_sensors.yaml",
-    "sensors.head_imu.endpoints.topic.kind": "extends:common/vega_1_sensors.yaml",
-    "sensors.head_imu.endpoints.topic.value": "extends:common/vega_1_sensors.yaml",
-    "sensors.head_imu.metadata.name": "extends:common/vega_1_sensors.yaml",
-    "sensors.head_imu.required": "extends:common/vega_1_sensors.yaml",
-    "sensors.head_imu.roles": "extends:common/vega_1_sensors.yaml",
     "sensors.left_wrist_camera.capabilities": "extends:common/vega_upper_body.yaml",
     "sensors.left_wrist_camera.driver": "extends:common/vega_upper_body.yaml",
     "sensors.left_wrist_camera.enabled": "extends:common/vega_upper_body.yaml",

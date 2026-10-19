@@ -4,6 +4,42 @@ All notable changes to this project will be documented in this file.
 
 ## [Unreleased]
 
+## [0.3.0] - 2026-10-18
+
+### Added
+
+- Declare optional front/back/left/right chassis RGB cameras on Vega-1 and
+  Vega-1p, including hand variants, with topic and RTC endpoints.
+- Give the shared Vega head camera an embedded IMU capability and endpoint,
+  including on Vega-1u. Add IMU streams to Vega-1p front/back 3D LiDARs.
+
+### Changed
+
+- Represent each camera or LiDAR and its embedded IMU as one sensor entry with
+  multiple capabilities. All remain optional and disabled by default.
+- **Migration:** remove the separate `head_imu` entry; enable `head_camera` and
+  request its typed IMU accessor. LiDAR IMUs use `lidar_3d_front` or
+  `lidar_3d_back`, without a separate `_imu` sensor name.
+- Regenerate all nine Vega resolved-profile contracts and cover sensor
+  capabilities, endpoints, enablement, and content hashes with regression tests.
+
+### Fixed
+
+- Keep the gripper `open` pose at 0.7854 rad for both hands. The joint limit
+  stays at the upstream 0.96 rad; only the stored pose goes back to the value
+  it had before the limit was raised. Regenerate the resolved contracts.
+
+## [0.2.4] - 2026-09-26
+
+### Changed
+
+- Rename the Rust package to `dexbot-utils` and imports to `dexbot_utils`.
+  The command-line executable remains `dexbot`.
+
+- Combine the model library and `dexbot` CLI into the `dexbot-utils` crate.
+  Install the binary with `cargo install dexbot-utils --locked`; no feature flags are required.
+  The minimum supported Rust version is now 1.85, matching the CLI parser.
+
 ## [0.2.3] - 2026-09-24
 
 - Vendor all nine FT URDFs from dexmate-urdf 0.9.0 (main at `d5636b5`),

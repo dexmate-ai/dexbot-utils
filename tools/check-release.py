@@ -11,9 +11,9 @@ if not re.fullmatch(r"\d+\.\d+\.\d+", version):
     sys.exit("Only stable x.y.z releases are supported")
 if len(sys.argv) > 1 and sys.argv[1] != "v" + version:
     sys.exit("Release tag must match workspace version v" + version)
-for crate in ("dexbot-cli", "dexbot-capi"):
+for crate in ("dexbot-capi",):
     manifest = tomllib.loads((root / "crates" / crate / "Cargo.toml").read_text())
-    dep = manifest["dependencies"].get("dexbot-model", manifest["dependencies"].get("model"))
+    dep = manifest["dependencies"].get("dexbot-utils", manifest["dependencies"].get("model"))
     if dep["version"] != "=" + version:
         sys.exit(crate + " model dependency version mismatch")
 if f"project(dexbot VERSION {version} " not in (root / "CMakeLists.txt").read_text():

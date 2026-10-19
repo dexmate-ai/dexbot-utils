@@ -7,7 +7,7 @@ from pathlib import Path
 import unittest
 import xml.etree.ElementTree as ET
 
-ASSETS = Path(__file__).resolve().parents[2] / 'crates/dexbot-model/assets/urdf/robots/humanoid'
+ASSETS = Path(__file__).resolve().parents[2] / 'crates/dexbot-utils/assets/urdf/robots/humanoid'
 
 class UpstreamAssetTests(unittest.TestCase):
     def test_corrected_inertial_blocks_match_across_variants(self):

@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.20)
-project(dexbot VERSION 0.2.3 LANGUAGES C CXX)
+project(dexbot VERSION 0.3.0 LANGUAGES C CXX)
 include(GNUInstallDirs)
 include(CMakePackageConfigHelpers)
 find_program(CARGO_EXECUTABLE cargo REQUIRED)
@@ -11,7 +11,7 @@ set(DEXBOT_NATIVE_LIBRARY "${DEXBOT_CARGO_TARGET_DIR}/release/${CMAKE_SHARED_LIB
 file(GLOB_RECURSE DEXBOT_RUST_INPUTS CONFIGURE_DEPENDS "${CMAKE_CURRENT_SOURCE_DIR}/crates/*")
 add_custom_command(OUTPUT "${DEXBOT_NATIVE_LIBRARY}" "${DEXBOT_CARGO_TARGET_DIR}/release/dexbot"
   COMMAND "${CMAKE_COMMAND}" -E env "CARGO_TARGET_DIR=${DEXBOT_CARGO_TARGET_DIR}" "${CARGO_EXECUTABLE}"
-    build --release --locked --manifest-path "${CMAKE_CURRENT_SOURCE_DIR}/Cargo.toml" -p dexbot-capi -p dexbot-cli
+    build --release --locked --manifest-path "${CMAKE_CURRENT_SOURCE_DIR}/Cargo.toml" -p dexbot-capi -p dexbot-utils
   DEPENDS ${DEXBOT_RUST_INPUTS} Cargo.toml Cargo.lock
   WORKING_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}" VERBATIM)
 add_custom_target(dexbot_native ALL DEPENDS "${DEXBOT_NATIVE_LIBRARY}" "${DEXBOT_CARGO_TARGET_DIR}/release/dexbot")
@@ -31,5 +31,5 @@ write_basic_package_version_file("${CMAKE_CURRENT_BINARY_DIR}/dexbotConfigVersio
 install(FILES "${CMAKE_CURRENT_BINARY_DIR}/dexbotConfig.cmake" "${CMAKE_CURRENT_BINARY_DIR}/dexbotConfigVersion.cmake"
   DESTINATION "${CMAKE_INSTALL_LIBDIR}/cmake/dexbot")
 
-install(FILES crates/dexbot-model/assets/urdf/LICENSE
+install(FILES crates/dexbot-utils/assets/urdf/LICENSE
   DESTINATION "${CMAKE_INSTALL_DATADIR}/dexbot" RENAME LICENSE-URDF)

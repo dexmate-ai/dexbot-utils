@@ -8,7 +8,7 @@ out="$root/robots/contracts/resolved-config/v0"
 # Capture failures before touching any fixture; stage on the same filesystem.
 stage="$(mktemp -d "$out/.regenerate.XXXXXX")"
 trap 'rm -rf "$stage"' EXIT
-cargo build --quiet --manifest-path "$root/Cargo.toml" -p dexbot-cli --message-format=json >"$stage/build.jsonl"
+cargo build --quiet --manifest-path "$root/Cargo.toml" -p dexbot-utils --bin dexbot --message-format=json >"$stage/build.jsonl"
 # Use Cargo's exact executable path, including custom target directories.
 cli="$(python3 - "$stage/build.jsonl" <<'PYTHON'
 import json, sys

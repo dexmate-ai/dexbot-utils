@@ -12,7 +12,7 @@ spec.loader.exec_module(policy)
 
 
 def check(archive, crate, version):
-    if crate not in {'dexbot-model', 'dexbot-cli'}:
+    if crate != 'dexbot-utils':
         raise ValueError('Unapproved crate')
     prefix = f'{crate}-{version}'
     seen = set()

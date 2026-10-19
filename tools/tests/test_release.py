@@ -82,8 +82,8 @@ class ReleaseTests(unittest.TestCase):
     def test_crate_gate_rejects_private_and_unsafe_entries(self):
         with tempfile.TemporaryDirectory() as temp:
             archive = Path(temp) / 'model.crate'
-            base = {'Cargo.toml': '[package]\nname="dexbot-model"\nversion="0.2.0"', 'src/lib.rs': '// public model'}
-            command = [sys.executable, str(ROOT / 'tools/check-crate.py'), str(archive), 'dexbot-model', '0.2.0']
+            base = {'Cargo.toml': '[package]\nname="dexbot-utils"\nversion="0.2.0"', 'src/lib.rs': '// public model'}
+            command = [sys.executable, str(ROOT / 'tools/check-crate.py'), str(archive), 'dexbot-utils', '0.2.0']
             for extra, valid in [({}, True), ({'secret.env': 'secret'}, False),
                                  ({'Cargo.toml': '[dependencies]\ndexcomm="0.6"'}, False),
                                  ({'../escape.rs': 'escape'}, False),
@@ -91,8 +91,27 @@ class ReleaseTests(unittest.TestCase):
                 with tarfile.open(archive, 'w:gz') as packed:
                     for name, data in (base | extra).items():
                         encoded = data.encode()
-                        entry = tarfile.TarInfo('dexbot-model-0.2.0/' + name)
+                        entry = tarfile.TarInfo('dexbot-utils-0.2.0/' + name)
                         entry.size = len(encoded)
                         packed.addfile(entry, io.BytesIO(encoded))
                 result = subprocess.run(command, capture_output=True)
                 self.assertEqual(result.returncode == 0, valid, result.stderr)
+
+    def test_single_crate_provides_cli_by_default(self):
+        import json
+        metadata = json.loads(subprocess.check_output(
+            ['cargo', 'metadata', '--locked', '--no-deps', '--format-version=1'], cwd=ROOT))
+        packages = {package['name']: package for package in metadata['packages']}
+        self.assertNotIn('dexbot-cli', packages)
+        self.assertNotIn('dexbot-model', packages)
+        model = packages['dexbot-utils']
+        library = next(target for target in model['targets'] if 'lib' in target['kind'])
+        self.assertEqual(library['name'], 'dexbot_utils')
+        self.assertNotIn('cli', model['features'])
+        cli = next(target for target in model['targets'] if target['name'] == 'dexbot')
+        self.assertFalse(cli.get('required-features'))
+        self.assertFalse(next(dep for dep in model['dependencies'] if dep['name'] == 'clap')['optional'])
+        tree = subprocess.check_output(
+            ['cargo', 'tree', '--locked', '-p', 'dexbot-utils',
+             '--edges', 'normal,build'], cwd=ROOT, text=True)
+        self.assertIn('clap', tree)

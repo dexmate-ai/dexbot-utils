@@ -5,7 +5,7 @@ import re
 import sys
 
 ROOT_FILES = {"Cargo.toml", "Cargo.lock", "CMakeLists.txt", "LICENSE", "README.md", "CHANGELOG.md", ".gitignore"}
-ROOTS = {"crates/dexbot-model", "crates/dexbot-cli", "crates/dexbot-capi", "bindings/c", "bindings/cpp", "cmake", "examples", "robots", "tools", "ci"}
+ROOTS = {"crates/dexbot-utils", "crates/dexbot-capi", "bindings/c", "bindings/cpp", "cmake", "examples", "robots", "tools", "ci"}
 SUFFIXES = {".rs", ".toml", ".lock", ".md", ".yaml", ".yml", ".json", ".urdf", ".xml", ".py", ".sh", ".h", ".hpp", ".cpp", ".cmake", ".in"}
 SECRET = re.compile(rb"-----BEGIN (?:RSA |EC |OPENSSH )?PRIVATE KEY-----|gh[pousr]_[A-Za-z0-9]{30,}|github_pat_[A-Za-z0-9_]{50,}|AKIA[0-9A-Z]{16}")
 

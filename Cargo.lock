@@ -208,26 +208,17 @@ dependencies = [
 
 [[package]]
 name = "dexbot-capi"
-version = "0.2.3"
+version = "0.3.0"
 dependencies = [
- "dexbot-model",
+ "dexbot-utils",
  "serde_json",
 ]
 
 [[package]]
-name = "dexbot-cli"
-version = "0.2.3"
+name = "dexbot-utils"
+version = "0.3.0"
 dependencies = [
  "clap",
- "dexbot-model",
- "serde_json",
- "tempfile",
-]
-
-[[package]]
-name = "dexbot-model"
-version = "0.2.3"
-dependencies = [
  "jsonschema",
  "quick-xml",
  "serde",

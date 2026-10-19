@@ -4,7 +4,7 @@
   "resolution_stage": "static",
   "profile_name": "vega_1u_gripper",
   "schema_version": 1,
-  "content_hash": "ac0a195d35238ddb1a022ca7b25f75e17609444ddb3fa856c244039e5370e8ed",
+  "content_hash": "e9fb693ede082cb209ee3a0979f58eea3420d21a9e4163a347b3f09b12c3e20b",
   "robot": {
     "model": "vega_1u",
     "namespace": null,
@@ -424,7 +424,7 @@
           "open": {
             "frame": "joint",
             "joint_pos": [
-              0.96
+              0.7854
             ]
           }
         },
@@ -681,7 +681,7 @@
           "open": {
             "frame": "joint",
             "joint_pos": [
-              0.96
+              0.7854
             ]
           }
         },
@@ -703,6 +703,10 @@
         {
           "id": "camera_stream",
           "required": true
+        },
+        {
+          "id": "imu",
+          "required": true
         }
       ],
       "dependencies": [],
@@ -711,6 +715,10 @@
         "depth_topic": {
           "kind": "topic",
           "value": "sensors/head_camera/depth"
+        },
+        "imu_topic": {
+          "kind": "topic",
+          "value": "sensors/head_camera/imu"
         },
         "left_rgb_rtc_channel": {
           "kind": "channel",
@@ -1230,6 +1238,8 @@
     "sensors.head_camera.enabled": "extends:common/vega_upper_body.yaml",
     "sensors.head_camera.endpoints.depth_topic.kind": "extends:common/vega_upper_body.yaml",
     "sensors.head_camera.endpoints.depth_topic.value": "extends:common/vega_upper_body.yaml",
+    "sensors.head_camera.endpoints.imu_topic.kind": "extends:common/vega_upper_body.yaml",
+    "sensors.head_camera.endpoints.imu_topic.value": "extends:common/vega_upper_body.yaml",
     "sensors.head_camera.endpoints.left_rgb_rtc_channel.kind": "extends:common/vega_upper_body.yaml",
     "sensors.head_camera.endpoints.left_rgb_rtc_channel.value": "extends:common/vega_upper_body.yaml",
     "sensors.head_camera.endpoints.left_rgb_topic.kind": "extends:common/vega_upper_body.yaml",

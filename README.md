@@ -12,15 +12,29 @@ embeds this crate and exposes it in every language it supports.
 
 | You are writing… | Use |
 | --- | --- |
-| Rust model/configuration tooling | `dexbot-model` from crates.io |
+| Rust model/configuration tooling | `dexbot-utils` from crates.io |
 | Python that controls a robot | `dexcontrol.robot_config()`, `dexcontrol.available_profiles()` |
 | C++ model/configuration tooling | This repository’s SDK (`dexbot::model`) |
 | Shell scripts, CI, operators | the `dexbot` CLI |
 
+## Vega sensor profiles
+
+Sensors are declared by physical device and are disabled until requested.
+Every Vega profile has head and wrist cameras; `head_camera` also owns its IMU.
+Vega-1 and Vega-1p add four chassis cameras. Vega-1 adds a chassis IMU, front
+2D LiDAR, and ultrasonic array; Vega-1p adds front/back 3D LiDARs, each with an
+embedded IMU. Vega-1u has no mobile-base sensors.
+
+Use `head_camera` instead of the former `head_imu` name. Read camera and LiDAR
+IMUs through the runtime's typed IMU accessor using the same device name.
+See the [profile API and sensor contracts](crates/dexbot-utils/assets/profiles/README.md)
+for capabilities, endpoint roles, and composition. `dexbot show PROFILE` inspects
+these declarations without connecting to hardware.
+
 ## Install in a Rust project
 
 ```bash
-cargo add dexbot-model
+cargo add dexbot-utils
 ```
 
 Source is published to crates.io. Profiles and URDFs are embedded; neither
@@ -87,16 +101,16 @@ cmake --install build
 ```
 
 Use `-DCMAKE_PREFIX_PATH="$HOME/.local"` in consuming projects. See
-`examples/cpp` and `crates/dexbot-model/examples/inspect_model.rs` for matching
+`examples/cpp` and `crates/dexbot-utils/examples/inspect_model.rs` for matching
 profile inspection tasks. Release configuration is documented in
 [ci/README.md](ci/README.md).
 
 ## Layout
 
-- `crates/dexbot-model` — the library. Profiles and URDFs are embedded at
+- `crates/dexbot-utils` — the library. Profiles and URDFs are embedded at
   compile time, so a consumer needs nothing on disk.
-- `crates/dexbot-cli` — the `dexbot` binary.
-- `crates/dexbot-model/assets/profiles` — the built-in profiles (`vega_1`,
+- The `dexbot-utils` crate also provides the `dexbot` binary by default.
+- `crates/dexbot-utils/assets/profiles` — the built-in profiles (`vega_1`,
   `vega_1u`, `vega_1p`, and their `_f5d6` / `_gripper` hand variants) and the
   fragments they `extends`. See its `README.md` for the profile format.
 - `robots/contracts` — frozen resolved-configuration contracts the tests pin.
@@ -105,11 +119,11 @@ profile inspection tasks. Release configuration is documented in
 
 ```toml
 [dependencies]
-dexbot-model = "0.2"
+dexbot-utils = "0.3"
 ```
 
 ```rust
-use dexbot_model::{available_profiles, try_profile_for_robot_name, RobotConfig};
+use dexbot_utils::{available_profiles, try_profile_for_robot_name, RobotConfig};
 
 // Built-in profiles, and the one a ROBOT_NAME-style identity selects. An
 // unrecognised name is an error, never a guess.
@@ -131,7 +145,7 @@ let customized = RobotConfig::from_profile("vega_1")?
     .with_overlay_file("my_overlay.yaml")?
     .resolve()?;
 let custom = RobotConfig::from_file("my_robot.yaml")?.resolve()?;
-# Ok::<(), dexbot_model::ModelError>(())
+# Ok::<(), dexbot_utils::ModelError>(())
 ```
 
 `package://dexmate_urdf/...` references resolve against an explicit asset
@@ -140,8 +154,8 @@ root, then `DEXBOT_ASSET_ROOT`, then the embedded URDFs.
 ## CLI
 
 ```bash
-cargo install dexbot-cli --locked       # after registry publication
-# From a source checkout: cargo install --locked --path crates/dexbot-cli
+cargo install dexbot-utils --locked       # after registry publication
+# From a source checkout: cargo install --locked --path crates/dexbot-utils
 
 dexbot list                              # built-in profiles
 dexbot show vega_1                       # normalized resolved configuration
