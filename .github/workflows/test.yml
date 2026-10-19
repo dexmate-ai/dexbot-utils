@@ -44,4 +44,4 @@ jobs:
           cmake --install build
           python tools/test-sdk.py stage
       - name: Verify model crate packaging
-        run: cargo package -p dexbot-model --locked
+        run: cargo package -p dexbot-utils --locked
